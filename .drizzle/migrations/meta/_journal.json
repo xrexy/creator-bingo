@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1699915321559,
+      "tag": "0000_sour_mystique",
+      "breakpoints": true
+    }
+  ]
+}

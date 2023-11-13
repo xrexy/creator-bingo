@@ -1,0 +1,37 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "cd4817dc-0b77-47cf-b219-4b23eef7e888",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "test": {
+      "name": "test",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "test_id": {
+          "name": "test_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
