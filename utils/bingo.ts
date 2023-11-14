@@ -1,12 +1,12 @@
 import { config } from "@/config";
 import { randomNumber } from ".";
 
-export type BoardEntry = {
+export type BoardCell = {
   text: string;
   checked: boolean;
 }
 
-export type Board = BoardEntry[][];
+export type Board = BoardCell[][];
 
 /**
  * Space on the board (row, col) => can be a tuple([row, col]) or an object
@@ -22,7 +22,7 @@ export const getBingoEntries = (o?: { includeFreeSpace?: boolean }) => {
   return includeFreeSpace ? bingoEntries : bingoEntries.slice(1);
 }
 
-export const stringToBoardEntry = (text: string): BoardEntry => ({ text, checked: false });
+export const stringToBoardEntry = (text: string): BoardCell => ({ text, checked: false });
 
 // size => size^2 => 5*5 = 25
 export const generateBoard = (size = 5) => {
@@ -63,9 +63,9 @@ export const toggleBoardEntryChecked = (board: Board, entry: BoardSpace) => {
 
   const boardEntry = board?.[row]?.[col];
 
-  if (!boardEntry) return;
+  if(boardEntry) boardEntry.checked = !boardEntry.checked;
 
-  boardEntry.checked = !boardEntry.checked;
+  return board;
 }
 
 export const toggleBoardEntryCheckedMultiple = (board: Board, entries: BoardSpace[]) => {
