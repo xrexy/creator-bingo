@@ -1,6 +1,8 @@
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
+import * as data from './data';
+
 export const env = createEnv({
   server: {
     DB_USER: z.string().min(1),
@@ -18,4 +20,4 @@ export const env = createEnv({
   emptyStringAsUndefined: true,
 });
 
-export const config = {env};
+export const config = { env, data };
