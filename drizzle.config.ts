@@ -1,10 +1,10 @@
 import type { Config } from 'drizzle-kit';
-import { config } from './config';
+import { env } from './src/config/env';
 
 export default {
-	schema: './server/db/schema.ts',
+	schema: './src/server/db/schema.ts',
 	out: './.drizzle/migrations',
 	driver: 'mysql2',
 	verbose: true,
-	dbCredentials: { uri: config.env.DB_URL },
+	dbCredentials: { uri: env.DB_URL },
 } satisfies Config;
