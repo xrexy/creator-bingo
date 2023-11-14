@@ -1,18 +1,4 @@
 import { generateBoard } from "@/utils";
-import { serverClient } from "./_trpc/serverClient";
-
-const Tests = async () => {
-  "use server";
-  const tests = await serverClient.getTests();
-
-  return (
-    <ul>
-      {tests.map((test) => (
-        <li key={test.id}>{test.id}</li>
-      ))}
-    </ul>
-  );
-};
 
 export default function Home() {
   const board = generateBoard();
