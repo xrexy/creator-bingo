@@ -1,11 +1,10 @@
-import "server-only";
-
 import { lucia } from 'lucia';
 import { planetscale } from '@lucia-auth/adapter-mysql'
 import { _connection } from './db/client';
 import { env } from '../config/env';
 import { nextjs, nextjs_future } from 'lucia/middleware';
 import { twitch } from '@lucia-auth/oauth/providers';
+import { omit } from "../utils";
 
 export const TABLE_NAMES = Object.freeze({
   user: 'auth_user',
@@ -20,12 +19,7 @@ export const auth = lucia({
   sessionCookie: {
     expires: false
   },
-  getUserAttributes(data) {
-    console.log('received user attributes', data)
-    return {
-      username: data.username
-    }
-  }
+  getUserAttributes: (data) => omit(data, ['id']),
 })
 
 export const twitchAuth = twitch(auth, {

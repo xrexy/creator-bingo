@@ -8,7 +8,12 @@ export const user = mysqlTable(TABLE_NAMES.user, {
 
   username: varchar("username", {
     length: 64
-    }).notNull(),
+  }).notNull(),
+
+  // can't do profile_picture because lucia's planetscale adapter takes key literally
+  profilePicture: varchar("profilePicture", {
+    length: 255
+  }).notNull(),
 });
 
 export const key = mysqlTable(TABLE_NAMES.key, {
@@ -31,7 +36,7 @@ export const session = mysqlTable(TABLE_NAMES.session, {
   userId: varchar("user_id", {
     length: 15
   })
-    .notNull() ,
+    .notNull(),
   activeExpires: bigint("active_expires", {
     mode: "number"
   }).notNull(),

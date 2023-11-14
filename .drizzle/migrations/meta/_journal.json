@@ -22,6 +22,20 @@
       "when": 1699986185188,
       "tag": "0002_sturdy_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1699988541345,
+      "tag": "0003_flashy_infant_terrible",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1699988737671,
+      "tag": "0004_condemned_quasimodo",
+      "breakpoints": true
     }
   ]
 }

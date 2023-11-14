@@ -29,7 +29,8 @@ export const GET = async (req: NextRequest) => {
       if(existingUser) return existingUser;
       
       return await createUser({ attributes: {
-        username: twitchUser.display_name
+        username: twitchUser.display_name,
+        profilePicture: twitchUser.profile_image_url
       }})
     }
 

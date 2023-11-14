@@ -1,0 +1,1 @@
+ALTER TABLE `auth_user` RENAME COLUMN `profile_picture` TO `profilePicture`;

@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    remotePatterns: [{ hostname: "static-cdn.jtvnw.net" }],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

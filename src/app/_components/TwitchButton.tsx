@@ -5,12 +5,12 @@ import { auth, twitchAuth } from "@/server/lucia";
 import { api } from "@/trpc/server";
 import { revalidatePath } from "next/cache";
 import * as context from "next/headers";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export async function TwitchButton({}) {
   const session = await api.auth.getSession();
-  console.log(session);
-
+  
   const connectTwitch = async () => {
     "use server";
 
@@ -38,6 +38,7 @@ export async function TwitchButton({}) {
       <form>
         <h2>Connected with Twitch</h2>
         <p>Connected as {session.user.username}</p>
+        <Image className="rounded-full" width={64} height={64} src={session.user.profilePicture} alt="Profile picture"  />
         <button
           formAction={async () => {
             "use server";
