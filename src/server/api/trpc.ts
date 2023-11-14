@@ -6,10 +6,13 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "@/server/db";
-import { auth } from "../lucia";
+import { Auth, auth } from "../lucia";
+
+import * as context from 'next/headers'
 
 interface CreateContextOptions {
   headers: Headers;
+  context: typeof context;
 }
 
 /**
@@ -18,8 +21,9 @@ interface CreateContextOptions {
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+  console.log
   return {
-    headers: opts.headers,
+    ...opts,
     db,
     auth
   };
@@ -32,12 +36,13 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = (opts: { req: NextRequest }) => {
-  // Fetch stuff that depends on the request
+  const { req } = opts;
 
   return createInnerTRPCContext({
-    headers: opts.req.headers,
+    headers: req.headers,
+    context,
   });
-};
+ };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
