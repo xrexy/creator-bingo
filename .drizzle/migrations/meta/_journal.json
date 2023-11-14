@@ -15,6 +15,13 @@
       "when": 1699964768522,
       "tag": "0001_wet_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1699986185188,
+      "tag": "0002_sturdy_scalphunter",
+      "breakpoints": true
     }
   ]
 }

@@ -4,7 +4,11 @@ import { TABLE_NAMES } from "../lucia";
 export const user = mysqlTable(TABLE_NAMES.user, {
   id: varchar("id", {
     length: 15
-  }).primaryKey()
+  }).primaryKey(),
+
+  username: varchar("username", {
+    length: 64
+    }).notNull(),
 });
 
 export const key = mysqlTable(TABLE_NAMES.key, {

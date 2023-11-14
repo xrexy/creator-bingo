@@ -4,6 +4,7 @@ import "server-only";
 
 import { oauthRouter } from "@/server/api/routers/oauth";
 import { createTRPCRouter } from "@/server/api/trpc";
+import { authRouter } from "./routers/auth";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +12,8 @@ import { createTRPCRouter } from "@/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  oauth: oauthRouter
+  oauth: oauthRouter,
+  auth: authRouter
 });
 
 // export type definition of API 

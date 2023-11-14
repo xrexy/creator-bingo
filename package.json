@@ -10,6 +10,7 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:generate": "drizzle-kit generate:mysql",
     "db:push": "drizzle-kit push:mysql",
+    "db:gm": "npm run db:generate && npm run db:migrate",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {

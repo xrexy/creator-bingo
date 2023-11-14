@@ -1,0 +1,1 @@
+ALTER TABLE `auth_user` ADD `username` varchar(64) NOT NULL;

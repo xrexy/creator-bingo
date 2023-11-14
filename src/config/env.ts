@@ -1,7 +1,6 @@
+import { oauthProviders } from "../constants";
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
-
-const oauthProviders  = ['TWITCH'] as const;
 
 const generateOAuthConfigs = (providers: typeof oauthProviders): {
   [key in `OAUTH_${(typeof providers)[number]}_CLIENT_ID`]: z.ZodString
