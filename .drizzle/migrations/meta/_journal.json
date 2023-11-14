@@ -36,6 +36,20 @@
       "when": 1699988737671,
       "tag": "0004_condemned_quasimodo",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1699993742633,
+      "tag": "0005_flimsy_leper_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1699995108211,
+      "tag": "0006_mute_the_captain",
+      "breakpoints": true
     }
   ]
 }

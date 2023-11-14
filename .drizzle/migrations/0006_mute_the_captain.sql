@@ -1,0 +1,1 @@
+ALTER TABLE `creator` MODIFY COLUMN `uuid` varchar(255) NOT NULL DEFAULT 'uuid()';
