@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-import { ClientSidebar, CreatorsCount } from ".";
-import { SidebarUserSection } from "./SidebarUserSection";
+import { SidebarUserSection, CreatorsCount } from ".";
 
 export function Sidebar() {
   return (
-    <div className="fixed top-0 z-20 flex w-full flex-col lg:pb-[72px] border-b border-gray-200/10 bg-black lg:bottom-0 lg:z-auto lg:w-72 lg:border-b-0 lg:border-r">
-      <div className="flex h-14 items-center px-4 py-4 lg:h-auto ">
-        <div className="group flex w-full items-center gap-x-2.5">
+    <div className="lg:fixed top-0 z-20 flex w-full flex-col lg:pb-[72px] border-b border-gray-200/10 bg-black lg:bottom-0 lg:z-auto lg:w-72 lg:border-b-0 lg:border-r">
+      <div className="flex h-14 w-full justify-between items-center px-4 py-4 lg:h-auto ">
+        <div className="group flex items-center gap-x-2.5">
           <svg
             width={26}
             height={26}
@@ -31,12 +30,11 @@ export function Sidebar() {
             </Suspense>
           </div>
         </div>
-      </div>
 
-      <ClientSidebar />
-      <Suspense fallback={<h1>loading...</h1>}>
-        <SidebarUserSection />
-      </Suspense>
+        <Suspense fallback={<h3>loading...</h3>}>
+          <SidebarUserSection />
+        </Suspense>
+      </div>
     </div>
   );
 }
