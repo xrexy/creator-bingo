@@ -5,12 +5,14 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
+import { unstable_noStore } from "next/cache";
 import Link from "next/link";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 
 export function CreatorToast() {
-  const creatorToastIsHidden = localStorage.getItem("creatorToastIsHidden");
+  unstable_noStore()
+  const creatorToastIsHidden = typeof window !== 'undefined' ? localStorage.getItem("creatorToastIsHidden") : null;
 
   useEffect(() => {
     if (creatorToastIsHidden && creatorToastIsHidden === "true") return;

@@ -1,7 +1,8 @@
-import { mysqlTable, bigint, varchar } from "drizzle-orm/mysql-core";
-import { TABLE_NAMES } from "../lucia";
+import "server-only"
 
-export const user = mysqlTable(TABLE_NAMES.user, {
+import { mysqlTable, bigint, varchar } from "drizzle-orm/mysql-core";
+
+export const user = mysqlTable('auth_user', {
   id: varchar("id", {
     length: 15
   }).primaryKey(),
@@ -16,7 +17,7 @@ export const user = mysqlTable(TABLE_NAMES.user, {
   }).notNull(),
 });
 
-export const key = mysqlTable(TABLE_NAMES.key, {
+export const key = mysqlTable('user_key', {
   id: varchar("id", {
     length: 255
   }).primaryKey(),
@@ -29,7 +30,7 @@ export const key = mysqlTable(TABLE_NAMES.key, {
   })
 });
 
-export const session = mysqlTable(TABLE_NAMES.session, {
+export const session = mysqlTable('user_session', {
   id: varchar("id", {
     length: 128
   }).primaryKey(),
@@ -46,15 +47,25 @@ export const session = mysqlTable(TABLE_NAMES.session, {
 });
 
 export const creator = mysqlTable('creator', {
-  uuid: varchar("uuid", {
-    length: 255
-  }).primaryKey().default("uuid()"),
-
   userId: varchar("user_id", {
     length: 15
-  })
+  }).primaryKey()
     .notNull(),
-
+  accessToken: varchar("access_token", {
+    length: 255
+  }).notNull(),
+  channelTitle: varchar("channel_title", {
+    length: 255
+  }).notNull(),
+  channelId: varchar("channel_id", {
+    length: 255
+  }).notNull(),
+  channelCustomUrl: varchar("channel_custom_url", {
+    length: 255
+  }),
+  channelThumbnail: varchar("channel_thumbnail", {
+    length: 512
+  }).notNull(),
 })
 
 // <iframe width="944" height="531" src="https://www.youtube.com/embed/HamlJatS3XE" title="It&#39;s been a year..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

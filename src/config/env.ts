@@ -30,6 +30,7 @@ export const env = createEnv({
     DB_NAME: z.string().default('creator-bingo'),
 
     ...generateOAuthConfigs(oauthProviders),
+    GOOGLE_API_KEY: z.string().min(1),
 
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },

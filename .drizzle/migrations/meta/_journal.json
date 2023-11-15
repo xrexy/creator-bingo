@@ -50,6 +50,20 @@
       "when": 1699995108211,
       "tag": "0006_mute_the_captain",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1700088852367,
+      "tag": "0007_elite_silver_sable",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1700089509481,
+      "tag": "0008_wandering_puma",
+      "breakpoints": true
     }
   ]
 }

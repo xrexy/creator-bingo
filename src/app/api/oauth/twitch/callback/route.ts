@@ -7,13 +7,10 @@ import { auth, twitchAuth } from "@/server/lucia";
 import { pick } from "@/utils";
 
 export const GET = async (req: NextRequest) => {
-  console.log(context.cookies().getAll(), req.cookies.getAll())
   const storedState = req.cookies.get(oauthProviderStateKey.TWITCH)?.value;
   const url = new URL(req.url);
   const state = url.searchParams.get('state');
   const code = url.searchParams.get('code');
-
-  console.log(storedState, url.toString(), state, code)
 
   if (!storedState || !state || storedState !== state || !code) {
     return new Response(null, {

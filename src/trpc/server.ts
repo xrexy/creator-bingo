@@ -1,3 +1,4 @@
+"use server";
 import "server-only"; // Make sure you can't import this on client
 
 import { headers } from "next/headers";
