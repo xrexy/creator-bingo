@@ -1,6 +1,5 @@
-import "server-only"
-
-import { mysqlTable, bigint, varchar } from "drizzle-orm/mysql-core";
+import { mysqlTable, bigint, varchar, int } from "drizzle-orm/mysql-core";
+import { relations } from "drizzle-orm";
 
 export const user = mysqlTable('auth_user', {
   id: varchar("id", {
@@ -16,6 +15,21 @@ export const user = mysqlTable('auth_user', {
     length: 255
   }).notNull(),
 });
+
+export const userRelations = relations(user, ({ one }) => ({
+  key: one(key, {
+    fields: [user.id],
+    references: [key.userId]
+  }),
+  session: one(session, {
+    fields: [user.id],
+    references: [session.userId]
+  }),
+  creatorAccount: one(creator, {
+    fields: [user.id],
+    references: [creator.userId]
+  })
+}))
 
 export const key = mysqlTable('user_key', {
   id: varchar("id", {
@@ -47,9 +61,10 @@ export const session = mysqlTable('user_session', {
 });
 
 export const creator = mysqlTable('creator', {
+  id: int("id").primaryKey().primaryKey().autoincrement(),
   userId: varchar("user_id", {
     length: 15
-  }).primaryKey()
+  })
     .notNull(),
   accessToken: varchar("access_token", {
     length: 255
@@ -67,5 +82,12 @@ export const creator = mysqlTable('creator', {
     length: 512
   }).notNull(),
 })
+
+export const creatorRelations = relations(creator, ({ one }) => ({
+  user: one(user, {
+    fields: [creator.userId],
+    references: [user.id],
+  })
+}))
 
 // <iframe width="944" height="531" src="https://www.youtube.com/embed/HamlJatS3XE" title="It&#39;s been a year..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

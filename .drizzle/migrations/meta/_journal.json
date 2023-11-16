@@ -5,64 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1699915321559,
-      "tag": "0000_sour_mystique",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1699964768522,
-      "tag": "0001_wet_mole_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1699986185188,
-      "tag": "0002_sturdy_scalphunter",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1699988541345,
-      "tag": "0003_flashy_infant_terrible",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1699988737671,
-      "tag": "0004_condemned_quasimodo",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1699993742633,
-      "tag": "0005_flimsy_leper_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1699995108211,
-      "tag": "0006_mute_the_captain",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1700088852367,
-      "tag": "0007_elite_silver_sable",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "5",
-      "when": 1700089509481,
-      "tag": "0008_wandering_puma",
+      "when": 1700137934496,
+      "tag": "0000_old_betty_brant",
       "breakpoints": true
     }
   ]
