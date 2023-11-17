@@ -1,11 +1,13 @@
+import "./globals.css";
+
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { Sidebar } from "./_components/sidebar";
-import "./globals.css";
-import { SessionProvider } from "./_components/context/useCurrentSession";
-import { TRPCReactProvider } from "@/trpc/react";
 import { headers } from "next/headers";
 import { Toaster } from "react-hot-toast";
+
+import { TRPCReactProvider } from "@/trpc/react";
+import { SessionProvider } from "./_components/context/useCurrentSession";
+import { Sidebar } from "./_components/sidebar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://creatorbingo.vercel.app/"),
@@ -38,10 +40,10 @@ export default function RootLayout({
               gutter={8}
               toastOptions={{
                 style: {
-                  color: 'white',
-                  padding: '0.3rem 0.5rem',
-                  background: 'black',
-                  border: '2px solid rgb(229 231 235 / 0.1)'
+                  color: "white",
+                  padding: "0.3rem 0.5rem",
+                  background: "black",
+                  border: "2px solid rgb(229 231 235 / 0.1)",
                 },
               }}
             />

@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 
-export const settingsTabs = ["overview", "link"] as const;
+export const settingsTabs = [ "link"] as const;
 
 export function SettingsList() {
   return (
-    <div>
+    <div className="flex flex-col px-2">
       {settingsTabs.map((tab) => (
         <Link
           href={`/settings/${tab}`}
