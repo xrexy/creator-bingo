@@ -3,7 +3,10 @@ import { oauthProviderStateKey } from "@/constants";
 import { twitchAuth } from "@/server/lucia";
 import { api } from "@/trpc/server";
 
-import { ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowRightOnRectangleIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/solid";
 
 import * as context from "next/headers";
 
@@ -63,11 +66,11 @@ export async function SidebarUserSection() {
 
             <div className="flex gap-x-2">
               <a
-                title="Profile"
+                title="Settings"
                 className="bg-gray-600/50 hover:bg-gray-700/50 transition hover:brightness-75 lg:w-8 lg:h-8 w-7 h-7 grid place-items-center rounded-lg lg:rounded-md"
-                href="/profile"
+                href="/settings"
               >
-                <UserIcon className="w-4 aspect-square" />
+                <Cog6ToothIcon className="w-4 aspect-square" />
               </a>
               <form>
                 <button
@@ -82,7 +85,9 @@ export async function SidebarUserSection() {
           </div>
         ) : (
           <div className="flex w-full justify-between items-center">
-            <p className="hidden lg:block font-semibold text-sm text-gray-400">Not logged in</p>
+            <p className="hidden lg:block font-semibold text-sm text-gray-400">
+              Not logged in
+            </p>
 
             <form>
               <button

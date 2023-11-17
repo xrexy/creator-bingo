@@ -9,6 +9,8 @@ import { auth, googleAuth } from "@/server/lucia";
 
 import * as context from 'next/headers'
 
+type Channel = Pick<typeof creator.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
+
 export const GET = async (req: NextRequest) => {
   const storedState = req.cookies.get(oauthProviderStateKey.GOOGLE)?.value;
   const url = new URL(req.url);
@@ -29,24 +31,30 @@ export const GET = async (req: NextRequest) => {
 
     const url = `https://youtube.googleapis.com/youtube/v3/channels?part=id,snippet&key=${env.GOOGLE_API_KEY}&mine=true`
 
-    const channel = await fetch(url, {
+    const channelRes = await fetch(url, {
       headers: {
         authorization: `Bearer ${accessToken}`,
         referer: 'http://localhost:3000'
       },
     })
       .then(res => res.json())
-      .then(res => {
-        const data = res.items[0]
-        if (!data || !data.snippet) throw new Error('no channel found')
 
-        return {
-          channelId: data.id,
-          channelTitle: data.snippet.title,
-          channelCustomUrl: data.snippet.customUrl,
-          channelThumbnail: data.snippet.thumbnails.default.url
+    const data = channelRes.items?.[0]
+    if (!data || !data.snippet) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          location: '/settings?error=channel'
         }
       })
+    }
+
+    const channel: Channel = {
+      channelId: data.id,
+      channelTitle: data.snippet.title,
+      channelCustomUrl: data.snippet.customUrl,
+      channelThumbnail: data.snippet.thumbnails.default.url,
+    }
 
     const inRes = await db.insert(creator).values({
       userId: session.user.userId,
@@ -59,12 +67,19 @@ export const GET = async (req: NextRequest) => {
       }
     })
 
-    if(inRes.rowsAffected === 0) throw new Error('failed to insert')
+    if (inRes.rowsAffected === 0) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          location: '/settings?error=insert'
+        }
+      });
+    }
 
     return new Response(null, {
       status: 302,
       headers: {
-        location: '/profile'
+        location: '/settings'
       }
     })
 
@@ -72,13 +87,19 @@ export const GET = async (req: NextRequest) => {
     console.error(e);
     if (e instanceof OAuthRequestError) {
       // url has been tampered with (prob invalid code)
-      return new Response(null, { status: 400 });
+      return new Response(null, {
+        status: 302,
+        headers: {
+          location: '/settings?error=oauth'
+        }
+      })
     }
 
-    if (e instanceof Error && e.message === 'no channel found') {
-      return new Response(null, { status: 400 })
-    }
-
-    return new Response(null, { status: 500 })
+    return new Response(null, {
+      status: 302,
+      headers: {
+        location: '/settings?error=unknown'
+      }
+    });
   }
 }

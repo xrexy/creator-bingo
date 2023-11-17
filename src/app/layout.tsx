@@ -28,13 +28,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`[color-scheme:dark] ${GeistSans.variable}`}
+      className={`dark ${GeistSans.variable}`}
     >
-      <body className="bg-black overflow-y-auto">
+      <body className="overflow-y-auto bg-black ">
         <TRPCReactProvider headers={headers()}>
           <SessionProvider>
             <Toaster
               position="bottom-right"
+              gutter={8}
               toastOptions={{
                 style: {
                   color: 'white',
@@ -45,13 +46,13 @@ export default function RootLayout({
               }}
             />
 
-            <div id="bgdots" className="absolute inset-0 bg-[radial-gradient(rgba(229,231,235,0.1)_1px,transparent_1px)] [background-size:16px_16px] z-[-1]" />
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(229,231,235,0.1)_1px,transparent_1px)] [background-size:16px_16px] z-[-1]" />
 
             <Sidebar />
 
             <div className="lg:pl-72">
-              <div className="mx-auto max-h-screen overflow-hidden max-w-4xl space-y-8 px-2 pt-20 lg:px-8 lg:py-8">
-                <div className="rounded-lg bg-vc-border-gradient p-px shadow-lg shadow-black/20">
+              <div className="max-w-4xl max-h-screen px-2 pt-20 mx-auto space-y-8 overflow-hidden lg:px-8 lg:py-8">
+                <div className="p-px rounded-lg shadow-lg bg-vc-border-gradient shadow-black/20">
                   <div className="rounded-lg bg-black p-3.5 lg:p-6 border border-gray-200/10">
                     <div className="space-y-10">{children}</div>
                   </div>

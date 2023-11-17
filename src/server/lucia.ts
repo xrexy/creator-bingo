@@ -4,7 +4,7 @@ import { _connection } from './db/client';
 import { env } from '../config/env';
 import { nextjs, nextjs_future } from 'lucia/middleware';
 import { twitch, google } from '@lucia-auth/oauth/providers';
-import { omit } from "../utils";
+import { omit } from "../lib/utils";
 
 export const auth = lucia({
   adapter: planetscale(_connection as any, {

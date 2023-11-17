@@ -1,7 +1,6 @@
-import { db } from "@/server/db";
-import { createTRPCContext, createTRPCRouter, publicProcedure } from "../trpc";
-import { sql } from "drizzle-orm";
 import { creator } from "@/server/db/schema";
+import { sql } from "drizzle-orm";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const metricRouter = createTRPCRouter({
   getTotalCreators: publicProcedure

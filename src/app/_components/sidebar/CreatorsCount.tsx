@@ -1,6 +1,8 @@
 import { api } from "@/trpc/server";
+import { unstable_noStore } from "next/cache";
 
 export async function CreatorsCount() {
+  unstable_noStore();
   const count = await api.metrics.getTotalCreators();
 
   return (

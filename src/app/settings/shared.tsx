@@ -1,0 +1,1 @@
+export const settingsTabs = ['overview', 'creator'] as const;

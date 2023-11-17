@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 import { oauthProviderStateKey } from "@/constants";
 import { auth, twitchAuth } from "@/server/lucia";
-import { pick } from "@/utils";
+import { pick } from "@/lib/utils";
 
 export const GET = async (req: NextRequest) => {
   const storedState = req.cookies.get(oauthProviderStateKey.TWITCH)?.value;

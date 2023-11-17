@@ -1,4 +1,4 @@
-import { config } from "../config";
+import { config } from "../../config";
 import { randomNumber } from ".";
 
 export type BoardCell = {

@@ -1,61 +1,45 @@
-import { config } from "@/config";
-import { oauthProviderStateKey } from "@/constants";
-import { session } from "@/server/db/schema";
-import { auth, twitchAuth } from "@/server/lucia";
-import { api } from "@/trpc/server";
-import { revalidatePath } from "next/cache";
-import * as context from "next/headers";
+"use client";
+
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { FormEventHandler } from "react";
+import { useAction } from "next-safe-action/hook";
 
-export async function TwitchButton({}) {
-  const session = await api.auth.getSession();
-  
-  const connectTwitch = async () => {
-    "use server";
+import { api } from "@/trpc/react";
+import { initOauthLogin } from "../_actions/initOauthLogin";
+import toast from "react-hot-toast";
 
-    if (session) {
-      console.log("Already logged in");
-      return;
-    }
+export function TwitchButton({}) {
+  const query = api.auth.getSession.useQuery();
+  const { execute, result, status } = useAction(initOauthLogin);
 
-    const [url, state] = await twitchAuth.getAuthorizationUrl();
-    context.cookies().set(oauthProviderStateKey.TWITCH, state, {
-      httpOnly: true,
-      secure: config.env.NODE_ENV === "production",
-      path: "/",
-      sameSite: "lax",
-      maxAge: 60 * 60, // 1 hour
-    });
-
-    console.log(`Redirecting to [${state}] ${url.toString()}`);
-
-    redirect(url.toString());
+  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    execute("TWITCH");
   };
 
-  if (session?.user) {
+  if (query.data?.user) {
+    const { user } = query.data;
     return (
       <form>
         <h2>Connected with Twitch</h2>
-        <p>Connected as {session.user.username}</p>
-        <Image className="rounded-full" width={64} height={64} src={session.user.profilePicture} alt="Profile picture"  />
-        <button
-          formAction={async () => {
-            "use server";
-
-            api.auth.logout();
-          }}
-        >
-          Disconnect Twitch
-        </button>
+        <p onClick={() => toast.success('kur')}>Connected as {user.username}</p>
+        <Image
+          className="rounded-full"
+          width={64}
+          height={64}
+          src={user.profilePicture}
+          alt="Profile picture"
+        />
       </form>
     );
   }
 
   return (
-    <form>
-      <button formAction={connectTwitch}>Connect with Twitch</button>
-    </form>
+    <div>
+      <form onSubmit={onSubmit}>
+        <button type="submit">Connect with Twitch</button>
+      </form>
+    </div>
   );
 }
 

@@ -1,12 +1,14 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
+import * as context from "next/headers";
+
 export const authRouter = createTRPCRouter({
-  getSession: publicProcedure.query(({ ctx: { auth, context } }) => {
+  getSession: publicProcedure.query(({ ctx: { auth } }) => {
     const authRequest = auth.handleRequest("GET", context);
     return authRequest.validate();
   }),
-  logout: publicProcedure.query(async ({ ctx: { auth, context } }) => {
+  logout: publicProcedure.query(async ({ ctx: { auth } }) => {
     const authRequest = auth.handleRequest("GET", context);
     const session = await authRequest.validate();
     

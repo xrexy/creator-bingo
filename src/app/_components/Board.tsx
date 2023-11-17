@@ -8,7 +8,7 @@ import {
   type Board as BoardType,
   generateBoard,
   toggleBoardEntryChecked,
-} from "@/utils";
+} from "@/lib/utils";
 
 export const Board= () => {
   const [board, setBoard] = useState(() => generateBoard());

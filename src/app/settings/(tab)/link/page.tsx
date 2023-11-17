@@ -1,12 +1,13 @@
-import { config } from "@/config";
 import { oauthProviderStateKey } from "@/constants";
 import { googleAuth } from "@/server/lucia";
 import { api } from "@/trpc/server";
 
-import * as context from "next/headers";
+import * as context from 'next/headers'
 import { redirect } from "next/navigation";
 
-export default async function ProfilePage() {
+import { config } from "@/config";
+
+export default async function SettingsLinkTabPage() {
   const loginWithGoogle = async () => {
     "use server";
 
@@ -31,7 +32,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <h1>Profile</h1>
+      <h1 className="font-bold text-lg">Profile</h1>
       {creator ? (
         <h1>{JSON.stringify(creator, null, 2)}</h1>
       ) : (
@@ -42,4 +43,3 @@ export default async function ProfilePage() {
     </>
   );
 }
-

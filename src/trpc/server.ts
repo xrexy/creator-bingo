@@ -1,8 +1,5 @@
-"use server";
-import "server-only"; // Make sure you can't import this on client
+import "server-only";
 
-import { headers } from "next/headers";
-import * as context from 'next/headers'
 import { appRouter } from "@/server/api/root";
 import { db } from "@/server/db";
 import { auth } from "@/server/lucia";
@@ -10,6 +7,8 @@ import { auth } from "@/server/lucia";
 export const api = appRouter.createCaller({
   db,
   auth,
-  headers: headers(),
-  context,
+
+  // @ts-expect-error undefiend isn't expected but, next/headers still sucks ass
+  headers: undefined,
+  // headers: headers(),
 });
