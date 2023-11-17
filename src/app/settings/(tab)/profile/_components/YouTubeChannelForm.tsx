@@ -1,31 +1,21 @@
 "use client";
 
-import type { Session } from "lucia";
+import { Trash } from "lucide-react";
 import { useAction } from "next-safe-action/hook";
-import { ElementRef, useEffect, useRef } from "react";
-import { use } from "react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type ElementRef, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 import { deleteCreator as deleteCreatorAction } from "@/app/_actions/deleteCreator";
 import { initOauthLogin } from "@/app/_actions/initOauthLogin";
-import type { Creator } from "@/app/client.types";
 import { FormSubmit } from "@/components/form/form-submit";
 import GoogleLogo from "@/components/logo/google";
 import { Label } from "@/components/ui/label";
-import { Trash } from "lucide-react";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import toast from "react-hot-toast";
 import {
   isValidSearchParamErrorOrDefault,
   searchParamErrorMesssages,
-  searchParamErrors,
 } from "@/lib/errorMessages";
-import { revalidatePath } from "next/cache";
-import Link from "next/link";
 
 function DeleteCreatorForm({
   name,
@@ -36,15 +26,8 @@ function DeleteCreatorForm({
   channelId: string;
   userId: string;
 }) {
-  const router = useRouter();
-
-  const { execute: deleteCreator } = useAction(deleteCreatorAction, {
-    onSettled: (d) => {
-      console.log(d);
-      revalidatePath("/settings/profile");
-      // router.refresh();
-    },
-  });
+  // re-validates /settings/profile on the server once it's complete
+  const { execute: deleteCreator } = useAction(deleteCreatorAction);
 
   return (
     <form
@@ -64,6 +47,7 @@ function DeleteCreatorForm({
         </p>
       </div>
       <FormSubmit
+        title="Disconnect YouTube Channel"
         className="h-full aspect-square hover:bg-red-600/50"
         variant="ghost"
       >
@@ -77,8 +61,8 @@ export function YouTubeChannelForm({
   creator,
   session,
 }: {
-  session: Session | null;
-  creator: Creator | undefined;
+  session: import("lucia").Session | null;
+  creator: import("@/app/client.types").Creator | undefined;
 }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();

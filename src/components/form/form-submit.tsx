@@ -9,6 +9,7 @@ type FormSubmitProps = {
   id: string;
   disabled: boolean;
   className: string;
+  title?: string;
   variant: ButtonVariant;
   size: ButtonSize;
 }>;
@@ -18,6 +19,7 @@ export const FormSubmit = ({
   disabled,
   className,
   id,
+  title,
   size = "sm",
   variant = "default",
 }: FormSubmitProps) => {
@@ -26,6 +28,7 @@ export const FormSubmit = ({
   return (
     <Button
       id={id}
+      title={title}
       disabled={pending || disabled}
       type="submit"
       variant={variant}
