@@ -8,6 +8,7 @@ import { creator } from "@/server/db/schema";
 import { auth, googleAuth } from "@/server/lucia";
 
 import * as context from 'next/headers'
+import { searchParamError } from "@/lib/errorMessages";
 
 type Channel = Pick<typeof creator.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
 
@@ -44,7 +45,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: '/settings?error=channel'
+          location: `/settings/profile?error=${searchParamError.channel}`
         }
       })
     }
@@ -71,7 +72,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: '/settings?error=insert'
+          location: `/settings?error=${searchParamError.channel}`
         }
       });
     }
@@ -90,7 +91,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: '/settings?error=oauth'
+          location: `/settings?error=${searchParamError.oauth}`
         }
       })
     }
@@ -98,7 +99,7 @@ export const GET = async (req: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        location: '/settings?error=unknown'
+        location: `/settings?error=${searchParamError.unknown}`
       }
     });
   }

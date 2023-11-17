@@ -5,7 +5,7 @@ export default async function Page() {
     <>
       <SettingsPageHeader
         meta={{
-          description: "Regenerate your API tokens.",
+          description: "Manage your API tokens.",
           title: "Tokens",
         }}
       />

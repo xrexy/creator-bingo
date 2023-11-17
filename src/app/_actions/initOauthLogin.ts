@@ -19,7 +19,7 @@ const urlProviders = {
 const input = z.enum(oauthProviders);
 
 export const initOauthLogin = createAuthAction(input, async (type, { session, authRequest }) => {
-  if (session?.user) {
+  if (type === 'TWITCH' && session?.user) {
     return {
       error: { cause: "ALREADY_LOGGED_IN" },
     }
