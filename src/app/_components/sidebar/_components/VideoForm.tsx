@@ -15,37 +15,32 @@ export type VideoFormProps = {
 
 export function VideoForm({ video, selected, onSelected }: VideoFormProps) {
   return (
-    <>
+    <div className="col-span-1">
       <input type="hidden" name="videoId" value={video.id ?? ''} disabled={selected?.id !== video.id} />
 
       <div
         className={cn(
-          "relative",
-          selected?.id === video.id && "border-2 border-blue-500"
+          "border-2 rounded-md border-gray-200/10 flex  flex-col gap-x-2",
+          selected?.id === video.id && "border-blue-500"
         )}
         key={video.id}
       >
         <button
           type="button"
           onClick={() => onSelected(video)}
-          className="flex flex-row justify-end"
+          className="flex flex-row justify-end h-full"
         >
           <Image
             width={320}
             height={180}
-            className="object-cover rounded-md"
+            className="object-cover w-full h-full rounded-md"
             src={`https://i.ytimg.com/vi/${video.resourceId}/mqdefault.jpg`}
             alt={video.title}
           />
-          <Badge
-            className="absolute bottom-2 left-2"
-            variant="secondary"
-          >
-            {video.title}
-          </Badge>
         </button>
       </div>
-    </>
+        <h5 className="text-xs">{video.title}</h5>
+    </div>
   );
 }
 

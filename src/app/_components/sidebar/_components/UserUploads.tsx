@@ -41,7 +41,7 @@ export function UserUploads({ creator, session, uploads }: UserUploadsProps) {
               <Plus size={16} />
             </Button>
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent className="w-full xs:w-3/4">
             <CreateUploadSheet
               creator={creator!}
               session={session!}

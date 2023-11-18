@@ -9,7 +9,7 @@ import { UserUploadsProps } from "./UserUploads";
 import { FormSubmit } from "@/components/form/form-submit";
 import { YouTubeActivity } from "@/components/logo/youtubeActivity";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
   SheetClose,
@@ -45,7 +45,7 @@ export function CreateUploadSheet({
 
   return (
     <>
-      <SheetHeader>
+      <SheetHeader className="text-left">
         <SheetTitle>
           <YouTubeActivity />
           Submit Video
@@ -65,46 +65,52 @@ export function CreateUploadSheet({
 
           router.refresh();
         }}
-        className="grid gap-4 py-4"
+        className="grid py-4"
       >
-        <div className="grid items-center grid-cols-4 gap-4">
-          <Label htmlFor="title">Card Title</Label>
-          <Input
-            id="title"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Will be automatically filled in."
-            className="col-span-3"
-          />
-        </div>
-
         <Separator />
 
         {!vidReq.data || vidReq.isFetching ? (
           // TODO skeletons
           <p className="text-muted">Loading...</p>
         ) : (
-          // TODO fix scroll area viewport is fucked (not whole height)
-          <ScrollArea className="mt-8 h-fit max-h-[55vh] grid grid-rows-2 pr-3">
-            {vidReq.data.map((video) => (
-              <VideoForm
-                key={video.id}
-                selected={selectedVideo}
-                onSelected={(vid) => {
-                  setSelectedVideo(vid);
-                  setTitle(vid.title);
-                }}
-                video={video}
-              />
-            ))}
+          <ScrollArea className="mt-2 whitespace-nowrap h-[60vh] pr-3 w-full overflow-x-auto">
+            <div className="grid grid-cols-1 gap-4 pb-4 xs:gap-2 xs:grid-cols-2">
+              {vidReq.data.map((video) => (
+                <VideoForm
+                  key={video.id}
+                  selected={selectedVideo}
+                  onSelected={(vid) => {
+                    setSelectedVideo(vid);
+                    setTitle(vid.title);
+                  }}
+                  video={video}
+                />
+              ))}
+            </div>
+
+            <ScrollBar orientation="vertical" />
           </ScrollArea>
         )}
 
-        <Separator />
-        <SheetClose asChild>
-          <FormSubmit>Submit</FormSubmit>
-        </SheetClose>
+        <div className="flex flex-col gap-y-4">
+          <Separator />
+
+          <div className="grid items-center grid-cols-4 gap-4">
+            <Label htmlFor="title">Card Title</Label>
+            <Input
+              id="title"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Will be auto-filled in once you select."
+              className="col-span-3 text-xs"
+            />
+          </div>
+
+          <SheetClose asChild>
+            <FormSubmit>Submit</FormSubmit>
+          </SheetClose>
+        </div>
       </form>
     </>
   );
