@@ -94,7 +94,7 @@ export function CreateUploadSheet({
                     {vidReq.data
                       .filter((vid) => {
                         return !uploads.some(
-                          (upload) => upload.videoId === vid.id
+                          (upload) => upload.videoId === vid.resourceId
                         );
                       })
                       .map((video) => (

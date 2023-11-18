@@ -16,7 +16,7 @@ export type VideoFormProps = {
 export function VideoForm({ video, selected, onSelected }: VideoFormProps) {
   return (
     <div className="col-span-1">
-      <input type="hidden" name="videoId" value={video.id ?? ''} disabled={selected?.id !== video.id} />
+      <input type="hidden" name="videoId" value={video.resourceId ?? ''} disabled={selected?.id !== video.id} />
 
       <div
         className={cn(

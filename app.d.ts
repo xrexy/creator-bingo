@@ -6,5 +6,6 @@ declare namespace Lucia {
 		username: string;
 		profilePicture: string;
 	};
-	type DatabaseSessionAttributes = {};
+	type DatabaseSessionAttributes = {
+	};
 }

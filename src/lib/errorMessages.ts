@@ -30,6 +30,7 @@ export const isValidActionErrorOrDefault = (error: unknown, def: ActionErrorKeys
 export enum SearchParamError {
   "NO_CHANNEL" = "channel",
   "INSERT_FAILED" = "insert",
+  "UPDATE_FAILED" = "update",
   "OAUTH_UNKOWN" = "oauth",
   "UNKNOWN" = "unknown",
 }
@@ -40,6 +41,7 @@ export type SearchParamErrorKeys = keyof SearchParamErrorType;
 export const searchParamErrorMesssages = {
   [SearchParamError.NO_CHANNEL]: "The account you are trying to link does not have a channel.",
   [SearchParamError.INSERT_FAILED]: "An error occurred while saving, please try again later.",
+  [SearchParamError.UPDATE_FAILED]: "An error occurred while updating, please try again later.",
   [SearchParamError.OAUTH_UNKOWN]: "An error occurred while authenticating, please try again later.",
   [SearchParamError.UNKNOWN]: "An unknown error occurred, please try again later.",
 } as const satisfies Record<SearchParamError, string>;

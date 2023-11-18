@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 import { oauthProviderStateKey } from "@/constants";
 import { auth, twitchAuth } from "@/server/lucia";
 import { pick } from "@/lib/utils";
+import { api } from "@/trpc/server";
 
 export const GET = async (req: NextRequest) => {
   const storedState = req.cookies.get(oauthProviderStateKey.TWITCH)?.value;
@@ -20,11 +21,11 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const { getExistingUser, twitchUser, createUser } = await twitchAuth.validateCallback(code);
-    console.log(twitchUser);
+
     const getUser = async () => {
       const existingUser = await getExistingUser();
       if(existingUser) return existingUser;
-      
+
       return await createUser({ attributes: {
         username: twitchUser.display_name,
         profilePicture: twitchUser.profile_image_url

@@ -4,13 +4,15 @@ import { NextRequest } from "next/server";
 import env from "@/config/env";
 import { oauthProviderStateKey } from "@/constants";
 import { db } from "@/server/db";
-import { creator } from "@/server/db/schema";
+import { creator as creatorTable } from "@/server/db/schema";
 import { auth, googleAuth } from "@/server/lucia";
 
 import { SearchParamError } from "@/lib/errorMessages";
+import { api } from "@/trpc/server";
+import { eq } from "drizzle-orm";
 import * as context from 'next/headers';
 
-type Channel = Pick<typeof creator.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
+type Channel = Pick<typeof creatorTable.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
 
 export const GET = async (req: NextRequest) => {
   const storedState = req.cookies.get(oauthProviderStateKey.GOOGLE)?.value;
@@ -26,11 +28,40 @@ export const GET = async (req: NextRequest) => {
     const { googleTokens } = await googleAuth.validateCallback(code);
     const { accessToken, refreshToken } = googleTokens;
 
-    console.log(googleTokens)
+    // console.log('google', googleUser)
 
     const authRequest = auth.handleRequest("GET", context);
     const session = await authRequest.validate();
-    if (!session) return new Response(null, { status: 401 })
+    if (!session?.user) return new Response(null, { status: 401 })
+
+    const creator = refreshToken ? await api.creator.getCreator({
+      userId: session.user.userId
+    }) : null
+    console.log(creator);
+    if (refreshToken && creator) {
+      // creator already exists we just update the tokens
+      try {
+        await db.update(creatorTable).set({
+          accessToken,
+          refreshToken
+        }).where(eq(creatorTable.userId, session.user.userId))
+
+        return new Response(null, {
+          status: 302,
+          headers: {
+            location: '/settings/tokens'
+          }
+        })
+      } catch (e) {
+        console.error(e);
+        return new Response(null, {
+          status: 302,
+          headers: {
+            location: `/settings?error=${SearchParamError.UPDATE_FAILED}`
+          }
+        });
+      }
+    }
 
     const url = `https://youtube.googleapis.com/youtube/v3/channels?part=id,snippet&key=${env.GOOGLE_API_KEY}&mine=true`
 
@@ -59,7 +90,7 @@ export const GET = async (req: NextRequest) => {
       channelThumbnail: data.snippet.thumbnails.default.url,
     }
 
-    const inRes = await db.insert(creator).values({
+    const inRes = await db.insert(creatorTable).values({
       userId: session.user.userId,
       accessToken,
       // TODO encrypt refresh and access
@@ -84,7 +115,7 @@ export const GET = async (req: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        location: '/settings'
+        location: '/settings/profile'
       }
     })
 

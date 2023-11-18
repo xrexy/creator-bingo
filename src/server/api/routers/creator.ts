@@ -3,12 +3,11 @@ import { z } from "zod";
 
 import { YouTubeVideo } from "@/app/client.types";
 import { config } from "@/config";
-import { ActionError, ActionErrorKeys, ActionErrorType } from "@/lib/errorMessages";
+import { ActionError, ActionErrorType } from "@/lib/errorMessages";
 import { Db, db } from "@/server/db/client";
 import { creator as creatorTable, upload } from "@/server/db/schema";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { get } from "http";
 
 const getUpload = (db: Db, userId: string) => db.query.upload.findMany({
   where: (u, { eq }) => eq(u.userId, userId),

@@ -2,6 +2,7 @@ export type Creator = {
   id: number;
   userId: string;
   accessToken: string;
+  refreshToken: string | null;
   channelTitle: string;
   channelId: string;
   channelCustomUrl: string | null;
