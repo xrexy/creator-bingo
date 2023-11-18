@@ -44,11 +44,9 @@ const getYouTubeVideosInternal = async (o:
   })
     .then(res => res.json())
 
-// https://accounts.google.com/signin/oauth/v2/consentsummary?authuser=1&part=AJi8hAOq9jywp57sgGbrcwJeVTNLZhSF5VSczT2g3eFI4U6xf5SgTFw8g752ZwZc3KjX3WvrOZyWyA0KNcbqIcU21l65h-3MP8BfTwTsfc_JHz6m_NMEUTkawuqvDmg-NmiHoqERtHHxtG0MLA5nOSH_jQb4SPvZrVGrqd4wn8Ys5JfW33a2R7nxBAFJD3pqV1WcIx0aYw2weWQp47gFll94FsjjXtutsi867-2Wq1zwcgE3JBF7jFXO68IfdZwjEGyD7Y3n3WRxN597UmwLQYy357ZWrMOesRsdG3EijM3sdKrB4eSDklVEMpZf32ySDZux8WL_DdZLb7HaUde4nJxTmnkjXwwZKafHwe8kJrw5dD4ge3vU55UOhDsQxbdsIBdSeDrSZ0Xz1heqNwd-GB0TnZ8lddEmF_B7E0Sxi0uCemfjnE-MDioCQWkjcYcWVgasM-iTyZIclwNRIok0sWFnBnv9Bh0MPgKJPx_PMuz6NECSK4rufqDQJC10UAhqfzDFlEx40Wpgjn4Y9lKTB8GKmn7dlsik1Mnlp_MZCqQtGVuw2RQDxxbgb1dam_AMtaFsObf9TkjiVNPe0Vg5IxLD25H6OqDldozP7JYD-Axg9xJNPCFQF6vQKulVEmXk89fvJKWLBM9iWen8uN-B_Q6ptptixJSDXMjdKfT10qgVmzCZJCS2t-6w7p_NF_Edu3y8DBsBUtY8m6mszLuZ9B0N_jiT2mSQqpDkYv5Gz3CE3gUAFYztMhh6LuKFjjyB9wRy_DD0VMDjma0ISiqe-0h0-tQOg7Z8Pw&hl=en&as=S1493841654%3A1700318910261434&client_id=595314327256-03r6atn71hm7fke2tp66bgtcgmdr8m86.apps.googleusercontent.com&rapt=AEjHL4OFAQ20--dZM1felu86yYRZxDcPpI75WcfOvhpatjy5tc3tkTThT-OEiYQ8dxehXToKx8_rRL2zdhUN6nt8q6_FMS5Eaw&theme=glif
-
   if (videosRes.error) {
     if (videosRes.error.code === 401 && videosRes.error.message.startsWith('Request had invalid authentication credentials.')) {
-      console.log('invalid token, trying to refresh')
+      console.log(`invalid token, trying to refresh with ${refreshToken}`)
       if (!refreshToken) return { error: { cause: ActionError.NO_REFRESH_TOKEN } }
 
       // TODO handle if refresh token has expired https://developers.google.com/identity/protocols/oauth2/web-server#exchange-authorization-code
@@ -60,6 +58,8 @@ const getYouTubeVideosInternal = async (o:
         },
       })
         .then(res => res.json())
+
+      console.log(refreshRes)
 
       await db.update(creatorTable).set({
         accessToken: refreshRes.access_token
@@ -138,7 +138,8 @@ export const creatorRouter = createTRPCRouter({
 
       console.log(creator);
 
-      return getYouTubeVideosInternal({ accessToken, userId, refreshToken: creator.refreshToken, maxResults, playlistId })
+      const res = await getYouTubeVideosInternal({ accessToken, userId, refreshToken: creator.refreshToken, maxResults, playlistId })
+      return res;
     } catch (e) {
       console.error(e);
     }
