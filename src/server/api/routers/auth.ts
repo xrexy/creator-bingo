@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as context from "next/headers";
@@ -22,19 +21,6 @@ export const authRouter = createTRPCRouter({
       headers: {
         location: '/'
       }
-    })
-  }),
-  getCreator: publicProcedure.input(z.object({
-    userId: z.string().optional(),
-    channelTitle: z.string().optional(),
-  })).query(({ ctx: { db }, input }) => {
-    // at least one should be provided
-    if (!input.userId && !input.channelTitle) {
-      throw new Error("Must provide either userId or channelTitle");
-    }
-
-    return db.query.creator.findFirst({
-      where: (c, { eq }) => input.channelTitle ? eq(c.channelTitle, input.channelTitle) : eq(c.userId, input.userId!),
     })
   })
 })

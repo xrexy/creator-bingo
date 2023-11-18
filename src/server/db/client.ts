@@ -15,3 +15,5 @@ export const _connection = connect({
 })
 
 export const db = drizzle(_connection, { schema });
+
+export type Db = typeof db;

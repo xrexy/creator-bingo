@@ -1,11 +1,24 @@
-import { Suspense } from "react";
-import { SidebarUserSection, CreatorsCount } from ".";
+import { api } from "@/trpc/server";
 import Link from "next/link";
+import { Suspense } from "react";
+import { CreatorsCount, SidebarUserSection } from ".";
+import UserUploads from "./_components/UserUploads";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export function Sidebar() {
+export async function Sidebar() {
+  const session = await api.auth.getSession();
+  const creator = session?.user
+    ? await api.creator.getCreator({ userId: session.user.userId })
+    : undefined;
+  const uploads = session?.user
+    ? await api.creator.getUploads({
+        userId: session?.user.userId,
+      })
+    : [];
+
   return (
     <div className="lg:fixed top-0 z-20 flex w-full flex-col lg:pb-[72px] border-b border-gray-200/10 bg-black lg:bottom-0 lg:z-auto lg:w-72 lg:border-b-0 lg:border-r">
-      <div className="flex h-14 w-full justify-between items-center px-4 py-4 lg:h-auto ">
+      <div className="flex items-center justify-between w-full px-4 py-4 h-14 lg:h-auto ">
         <div className="flex items-center gap-x-2.5">
           <Link href="/">
             <svg
@@ -38,6 +51,14 @@ export function Sidebar() {
           <SidebarUserSection />
         </Suspense>
       </div>
+
+      <ScrollArea className="w-full px-4">
+        <UserUploads
+          creator={creator}
+          session={session}
+          uploads={uploads}
+        />
+      </ScrollArea>
     </div>
   );
 }

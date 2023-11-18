@@ -1,7 +1,7 @@
 import { useFormStatus } from "react-dom";
 
 import { cn } from "@/lib/utils";
-import { Button, ButtonSize, ButtonVariant } from "@/components/ui/button";
+import { Button, ButtonProps, ButtonSize, ButtonVariant } from "@/components/ui/button";
 
 type FormSubmitProps = {
   children: React.ReactNode;
@@ -12,6 +12,7 @@ type FormSubmitProps = {
   title?: string;
   variant: ButtonVariant;
   size: ButtonSize;
+  formAction: ButtonProps['formAction']
 }>;
 
 export const FormSubmit = ({
@@ -20,6 +21,7 @@ export const FormSubmit = ({
   className,
   id,
   title,
+  formAction,
   size = "sm",
   variant = "default",
 }: FormSubmitProps) => {
@@ -27,6 +29,7 @@ export const FormSubmit = ({
 
   return (
     <Button
+      formAction={formAction}
       id={id}
       title={title}
       disabled={pending || disabled}

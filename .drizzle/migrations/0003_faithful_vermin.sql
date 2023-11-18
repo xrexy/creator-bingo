@@ -1,0 +1,1 @@
+ALTER TABLE `creator` ADD CONSTRAINT `creator_channel_id_unique` UNIQUE(`channel_id`);

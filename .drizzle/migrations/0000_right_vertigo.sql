@@ -24,6 +24,15 @@ CREATE TABLE `user_session` (
 	CONSTRAINT `user_session_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
+CREATE TABLE `upload` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`user_id` varchar(15) NOT NULL,
+	`video_id` varchar(255) NOT NULL,
+	`title` varchar(255) NOT NULL,
+	`created_at` bigint NOT NULL,
+	CONSTRAINT `upload_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
 CREATE TABLE `auth_user` (
 	`id` varchar(15) NOT NULL,
 	`username` varchar(64) NOT NULL,

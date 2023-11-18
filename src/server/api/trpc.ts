@@ -8,6 +8,8 @@ import { ZodError } from "zod";
 import { db } from "@/server/db";
 import { auth } from "../lucia";
 
+import * as context from 'next/headers';
+
 interface CreateContextOptions {
   headers: Headers;
 }

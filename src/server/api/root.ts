@@ -6,6 +6,7 @@ import { oauthRouter } from "@/server/api/routers/oauth";
 import { createTRPCRouter } from "@/server/api/trpc";
 import { authRouter } from "./routers/auth";
 import { metricRouter } from "./routers/metrics";
+import { creatorRouter } from "./routers/creator";
 
 /**
  * This is the primary router for your server.
@@ -15,6 +16,7 @@ import { metricRouter } from "./routers/metrics";
 export const appRouter = createTRPCRouter({
   oauth: oauthRouter,
   auth: authRouter,
+  creator: creatorRouter,
   metrics: metricRouter
 });
 

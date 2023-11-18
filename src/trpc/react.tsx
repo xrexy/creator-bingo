@@ -1,6 +1,8 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
@@ -39,9 +41,17 @@ export function TRPCReactProvider(props: {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <api.Provider client={trpcClient} queryClient={queryClient}>
+      <api.Provider
+        client={trpcClient}
+        queryClient={queryClient}
+      >
         {props.children}
       </api.Provider>
+
+      {process.env.NODE_ENV !== "production" && (
+        <ReactQueryDevtools buttonPosition="bottom-left" position="left" initialIsOpen={false} />
+      )}
     </QueryClientProvider>
   );
 }
+

@@ -13,7 +13,7 @@ const input = z.object({
 })
 
 export const deleteCreator = createAuthAction(input, async ({ userId }, { session }) => {
-  if (!session) return { error: { cause: actionError.NOT_LOGGED_IN } } as const;
+  if (!session) return { error: { cause: actionError.UNAUTHENTICATED } } as const;
 
   try {
     const { rowsAffected } = await db.delete(creator).where(eq(creator.userId, userId));

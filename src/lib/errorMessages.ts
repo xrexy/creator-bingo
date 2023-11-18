@@ -1,6 +1,6 @@
 // --- Action Errors
 
-export const actionErrors = ["NOT_LOGGED_IN", 'NOTHING_CHANGED', 'UNKNOWN'] as const;
+export const actionErrors = ["UNAUTHENTICATED", 'NOTHING_CHANGED', 'UNKNOWN'] as const;
 export type ActionError = typeof actionErrors[number];
 
 export const actionError = actionErrors.reduce((acc, cur) => {
@@ -9,7 +9,7 @@ export const actionError = actionErrors.reduce((acc, cur) => {
 }, {} as Record<ActionError, ActionError>);
 
 export const actionErrorMessages = {
-  NOT_LOGGED_IN: "You are not logged in.",
+  UNAUTHENTICATED: "You are not logged in.",
   NOTHING_CHANGED: "Nothing changed.",
   UNKNOWN: "An unknown error occurred, please try again later.",
 } as const satisfies Record<ActionError, string>;

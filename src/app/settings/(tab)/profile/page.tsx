@@ -5,7 +5,7 @@ import { SettingsPageHeader } from "../../_components/SettingsPageHeader";
 export default async function SettingsLinkTabPage() {
   const session = await api.auth.getSession();
   const creator = session
-    ? await api.auth.getCreator({ userId: session.user.userId })
+    ? await api.creator.getCreator({ userId: session.user.userId })
     : undefined;
 
   return (

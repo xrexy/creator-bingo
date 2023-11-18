@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "d9da78b0-981c-4943-a55e-0aeb20fd0793",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "f9d0c7fd-f1d0-4209-883b-be6fd700c099",
+  "prevId": "511fa65a-2b10-4ac6-8118-2a89934c986d",
   "tables": {
     "creator": {
       "name": "creator",
@@ -23,6 +23,13 @@
         },
         "access_token": {
           "name": "access_token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "refresh_token": {
+          "name": "refresh_token",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true,
@@ -57,7 +64,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_id_index": {
+          "name": "user_id_index",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "creator_id": {
@@ -189,7 +204,22 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "user_id_index": {
+          "name": "user_id_index",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        },
+        "video_id_index": {
+          "name": "video_id_index",
+          "columns": [
+            "video_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {
         "upload_id": {
