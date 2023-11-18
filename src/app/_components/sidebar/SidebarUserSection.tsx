@@ -50,15 +50,15 @@ export async function SidebarUserSection() {
 
   return (
     <div className="lg:absolute justify-center items-center inset-x-0 bottom-0 rounded-lg bg-vc-border-gradient p-px lg:h-[72px] shadow-lg shadow-black/20 z-[1]">
-      <div className="flex h-full flex-row justify-between items-center w-full border-t lg:border-gray-200/10 border-transparent px-2">
+      <div className="flex flex-row items-center justify-between w-full h-full px-2 border-t border-transparent lg:border-gray-200/10">
         {session?.user ? (
-          <div className="flex w-full lg:flex-row flex-row-reverse  justify-between gap-x-2 items-center">
-            <div className="flex flex-row-reverse lg:flex-row items-center gap-x-2">
+          <div className="flex flex-row-reverse items-center justify-between w-full lg:flex-row gap-x-2">
+            <div className="flex flex-row-reverse items-center lg:flex-row gap-x-2">
               <Image
                 className="rounded-full"
                 width={32}
                 height={32}
-                src={session.user.profilePicture}
+                src={session.user.avatar}
                 alt={`${session.user.username}'s picture`}
               />
               <p className="font-semibold">{session.user.username}</p>
@@ -67,7 +67,7 @@ export async function SidebarUserSection() {
             <div className="flex gap-x-2">
               <a
                 title="Settings"
-                className="bg-gray-600/50 hover:bg-gray-700/50 transition hover:brightness-75 lg:w-8 lg:h-8 w-7 h-7 grid place-items-center rounded-lg lg:rounded-md"
+                className="grid transition rounded-lg bg-gray-600/50 hover:bg-gray-700/50 hover:brightness-75 lg:w-8 lg:h-8 w-7 h-7 place-items-center lg:rounded-md"
                 href="/settings"
               >
                 <Cog6ToothIcon className="w-4 aspect-square" />
@@ -75,7 +75,7 @@ export async function SidebarUserSection() {
               <form>
                 <button
                   title="Log out"
-                  className="bg-red-600/50 hover:bg-red-700/50 lg:w-8 lg:h-8 w-7 h-7 grid place-items-center rounded-lg lg:rounded-md transition hover:brightness-75"
+                  className="grid transition rounded-lg bg-red-600/50 hover:bg-red-700/50 lg:w-8 lg:h-8 w-7 h-7 place-items-center lg:rounded-md hover:brightness-75"
                   formAction={destroySession}
                 >
                   <ArrowRightOnRectangleIcon className="w-4 aspect-square" />
@@ -84,15 +84,15 @@ export async function SidebarUserSection() {
             </div>
           </div>
         ) : (
-          <div className="flex w-full justify-between items-center">
-            <p className="hidden lg:block font-semibold text-sm text-gray-400">
+          <div className="flex items-center justify-between w-full">
+            <p className="hidden text-sm font-semibold text-gray-400 lg:block">
               Not logged in
             </p>
 
             <form>
               <button
                 title="Log out"
-                className="bg-indigo-600/50 hover:bg-indigo-700/50 pt-2 pb-1 px-3 border-b-2 border-r-2 border-indigo-600/50 items-center  rounded-md transition hover:brightness-75 flex flex-row gap-x-1"
+                className="flex flex-row items-center px-3 pt-2 pb-1 transition border-b-2 border-r-2 rounded-md bg-indigo-600/50 hover:bg-indigo-700/50 border-indigo-600/50 hover:brightness-75 gap-x-1"
                 formAction={initTwitchAuthentication}
               >
                 <svg

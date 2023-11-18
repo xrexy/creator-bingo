@@ -1,3 +1,3 @@
-import bingoEntriesData from '../../data/bingo_entries.json';
+import bingoMapData from '../../data/bingo_entries.json';
 
-export const bingoEntries = bingoEntriesData;
+export const bingoMap = bingoMapData;

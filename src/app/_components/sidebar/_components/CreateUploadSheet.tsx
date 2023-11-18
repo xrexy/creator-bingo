@@ -33,7 +33,7 @@ export type CreateUploadSheetProps = NoneNullDeep<UserUploadsProps> & {
 export function CreateUploadSheet({
   creator,
   session,
-  uploads,
+  boards,
   onClose,
 }: CreateUploadSheetProps) {
   const router = useRouter();
@@ -93,8 +93,8 @@ export function CreateUploadSheet({
                   <>
                     {vidReq.data
                       .filter((vid) => {
-                        return !uploads.some(
-                          (upload) => upload.videoId === vid.resourceId
+                        return !boards.some(
+                          (b) => b.resourceId === vid.resourceId
                         );
                       })
                       .map((video) => (
@@ -140,7 +140,7 @@ export function CreateUploadSheet({
               formAction={async (fd) => {
                 const res = await createUpload({
                   title: fd.get("title") as string,
-                  videoId: fd.get("videoId") as string,
+                  resourceId: fd.get("resourceId") as string,
                   userId: session.user.userId,
                 });
 

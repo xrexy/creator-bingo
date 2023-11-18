@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1700265388270,
-      "tag": "0000_right_vertigo",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1700265661130,
-      "tag": "0001_zippy_albert_cleary",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1700272229540,
-      "tag": "0002_glamorous_tombstone",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1700272488418,
-      "tag": "0003_faithful_vermin",
+      "when": 1700335642476,
+      "tag": "0000_true_toad",
       "breakpoints": true
     }
   ]

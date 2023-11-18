@@ -8,7 +8,7 @@ import { z } from "zod";
 const input = z.object({
   userId: z.string(),
   title: z.string(),
-  videoId: z.string(),
+  resourceId: z.string(),
 })
 
 export const createUpload = createAction(input, async (data) => {

@@ -5,11 +5,13 @@ import { YouTubeVideo } from "@/app/client.types";
 import { config } from "@/config";
 import { ActionError, ActionErrorType } from "@/lib/errorMessages";
 import { Db, db } from "@/server/db/client";
-import { creator as creatorTable, upload } from "@/server/db/schema";
+import { creator as creatorTable, board } from "@/server/db/schema";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-const getUpload = (db: Db, userId: string) => db.query.upload.findMany({
+import * as context from 'next/headers'
+
+const getUpload = (db: Db, userId: string) => db.query.board.findMany({
   where: (u, { eq }) => eq(u.userId, userId),
   with: {
     user: true
@@ -60,12 +62,16 @@ const getYouTubeVideosInternal = async (o:
 
       console.log(refreshRes)
 
+      const newToken = refreshRes.access_token;
+
+      console.log(newToken)
+    
       await db.update(creatorTable).set({
-        accessToken: refreshRes.access_token
+        accessToken: newToken
       }).where(eq(creatorTable.userId, userId))
 
       // retry with new access token
-      return getYouTubeVideosInternal({ ...o, refreshToken: refreshRes.refresh_token })
+      return await getYouTubeVideosInternal({ ...o, refreshToken: newToken })
     }
 
     console.error(videosRes.error);
@@ -107,7 +113,7 @@ export const creatorRouter = createTRPCRouter({
 
     return getCreator(db, input)
   }),
-  getUploads: publicProcedure.input(z.object({
+  getBoards: publicProcedure.input(z.object({
     userId: z.string(),
   })).query(async ({ ctx, input }) => {
     const { db } = ctx;
@@ -120,6 +126,32 @@ export const creatorRouter = createTRPCRouter({
     }
 
     return []
+  }),
+  getBoard: publicProcedure.input(z.object({
+    resourceId: z.string(),
+    userId: z.string().optional(),
+  })).query(async ({ ctx, input }) => {
+    const { db } = ctx;
+    const { resourceId, userId } = input;
+
+    const authRequest = ctx.auth.handleRequest("GET", context);
+    const session = userId ? await authRequest.validate() : null;
+
+    if (userId && !session?.user) return { type: "error", cause: ActionError.UNAUTHENTICATED } as const;
+
+    try {
+      const board = await db.query.board.findFirst({
+        where: (u, { eq, and }) => userId ? and(eq(u.userId, session!.user.userId), eq(u.resourceId, resourceId)) : eq(u.resourceId, resourceId),
+        with: {
+          user: true
+        }
+      })
+
+      return { type: "data", data: board } as const;
+    } catch (e) {
+      console.error(e);
+      return { type: "error", cause: ActionError.UNKNOWN } as const;
+    }
   }),
   getYouTubeVideos: publicProcedure.input(z.object({
     userId: z.string(),
@@ -135,8 +167,6 @@ export const creatorRouter = createTRPCRouter({
       const { accessToken, channelId } = creator;
       const playlistId = `UU${channelId.slice(2)}` // channelId starts with UC, playlistId starts with UU
 
-      console.log(creator);
-
       const res = await getYouTubeVideosInternal({ accessToken, userId, refreshToken: creator.refreshToken, maxResults, playlistId })
       return res;
     } catch (e) {
@@ -148,24 +178,25 @@ export const creatorRouter = createTRPCRouter({
   createUpload: publicProcedure.input(z.object({
     userId: z.string(),
     title: z.string(),
-    videoId: z.string(),
+    resourceId: z.string(),
   })).query(async ({ ctx, input }) => {
     const { db } = ctx;
-    const { userId, title, videoId } = input;
+    const { userId, title, resourceId } = input;
 
     try {
       const creator = await getCreator(db, { userId });
+      // TODO see if this kills everything VERY optimistic atm
       if (!creator) throw new Error("Creator not found");
 
       const { id } = creator;
-      const uploadRes = await db.insert(upload).values({
+      const uploadRes = await db.insert(board).values({
         createdAt: sql`UNIX_TIMESTAMP()`,
         userId,
         title,
-        videoId
+        resourceId
       });
 
-      if (uploadRes.rowsAffected === 0) throw new Error("Failed to create upload");
+      if (uploadRes.rowsAffected === 0) throw new Error("Failed to create board");
 
       return uploadRes.insertId;
     } catch (e) {

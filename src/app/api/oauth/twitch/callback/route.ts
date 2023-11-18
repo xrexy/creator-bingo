@@ -28,7 +28,7 @@ export const GET = async (req: NextRequest) => {
 
       return await createUser({ attributes: {
         username: twitchUser.display_name,
-        profilePicture: twitchUser.profile_image_url
+        avatar: twitchUser.profile_image_url
       }})
     }
 

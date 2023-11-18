@@ -10,8 +10,8 @@ export async function Sidebar() {
   const creator = session?.user
     ? await api.creator.getCreator({ userId: session.user.userId })
     : undefined;
-  const uploads = session?.user
-    ? await api.creator.getUploads({
+  const boards = session?.user
+    ? await api.creator.getBoards({
         userId: session?.user.userId,
       })
     : [];
@@ -56,7 +56,14 @@ export async function Sidebar() {
         <UserUploads
           creator={creator}
           session={session}
-          uploads={uploads}
+          boards={boards.map((b) => ({
+            resourceId: b.resourceId,
+            title: b.title,
+            createdAt: new Date(b.createdAt * 1000),
+            publisher: {
+              ...b.user,
+            },
+          }))}
         />
       </ScrollArea>
     </div>
