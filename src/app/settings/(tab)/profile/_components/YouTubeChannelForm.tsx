@@ -72,7 +72,7 @@ export function YouTubeChannelForm({
   useEffect(() => {
     if (!error) return;
 
-    const validError = isValidSearchParamErrorOrDefault(error, "unknown");
+    const validError = isValidSearchParamErrorOrDefault(error, 'UNKNOWN');
     toast.error(searchParamErrorMesssages[validError]); // will be fired twice in dev cause of strict mode
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.delete("error");

@@ -1,11 +1,10 @@
 "use client";
 
-import { FormSubmit } from "@/components/form/form-submit";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 import CreateUploadSheet from "./CreateUploadSheet";
-import { createUpload } from "@/app/_actions/createUpload";
 
 export type UserUploadsProps = {
   session: import("lucia").Session | null;
@@ -26,11 +25,15 @@ export type UserUploadsProps = {
 };
 
 export function UserUploads({ creator, session, uploads }: UserUploadsProps) {
+  const [panelOpen, setPanelOpen] = useState(false);
   return (
     <div className="">
       <div className="flex justify-between w-full ">
-        <h3>Your Uploads</h3>
-        <Sheet onOpenChange={console.log}>
+        <h3>Your Uploads{panelOpen}</h3>
+        <Sheet
+          open={panelOpen}
+          onOpenChange={setPanelOpen}
+        >
           <SheetTrigger asChild>
             <Button
               disabled={!creator || !session}
@@ -46,6 +49,7 @@ export function UserUploads({ creator, session, uploads }: UserUploadsProps) {
               creator={creator!}
               session={session!}
               uploads={uploads}
+              onClose={() => setPanelOpen(false)}
             />
           </SheetContent>
         </Sheet>

@@ -7,7 +7,7 @@ import { db } from "@/server/db";
 import { creator } from "@/server/db/schema";
 import { auth, googleAuth } from "@/server/lucia";
 
-import { searchParamError } from "@/lib/errorMessages";
+import { SearchParamError } from "@/lib/errorMessages";
 import * as context from 'next/headers';
 
 type Channel = Pick<typeof creator.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
@@ -25,6 +25,8 @@ export const GET = async (req: NextRequest) => {
   try {
     const { googleTokens } = await googleAuth.validateCallback(code);
     const { accessToken, refreshToken } = googleTokens;
+
+    console.log(googleTokens)
 
     const authRequest = auth.handleRequest("GET", context);
     const session = await authRequest.validate();
@@ -45,7 +47,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: `/settings/profile?error=${searchParamError.channel}`
+          location: `/settings/profile?error=${SearchParamError.NO_CHANNEL}`
         }
       })
     }
@@ -60,7 +62,8 @@ export const GET = async (req: NextRequest) => {
     const inRes = await db.insert(creator).values({
       userId: session.user.userId,
       accessToken,
-      refreshToken: refreshToken ? refreshToken : '',  // should be fine, refresh token is sent only first time user authorizes app
+      // TODO encrypt refresh and access
+      refreshToken: refreshToken ? refreshToken : '',
       ...channel,
     }).onDuplicateKeyUpdate({
       set: {
@@ -73,7 +76,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: `/settings?error=${searchParamError.channel}`
+          location: `/settings?error=${SearchParamError.INSERT_FAILED}`
         }
       });
     }
@@ -92,7 +95,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(null, {
         status: 302,
         headers: {
-          location: `/settings?error=${searchParamError.oauth}`
+          location: `/settings?error=${SearchParamError.OAUTH_UNKOWN}`
         }
       })
     }
@@ -100,7 +103,7 @@ export const GET = async (req: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        location: `/settings?error=${searchParamError.unknown}`
+        location: `/settings?error=${SearchParamError.UNKNOWN}`
       }
     });
   }
