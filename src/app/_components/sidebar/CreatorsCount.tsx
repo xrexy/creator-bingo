@@ -6,7 +6,7 @@ export async function CreatorsCount() {
   const count = await api.metrics.getTotalCreators();
 
   return (
-    <p className="text-sm text-gray-500">
+    <p className="text-sm text-neutral-500">
       <span className="text-sky-400">{count}</span> creators registered
     </p>
   );

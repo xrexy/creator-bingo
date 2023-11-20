@@ -54,7 +54,7 @@ export default function RootLayout({
             <Sidebar />
 
             <div className="lg:pl-72">
-              <div className="max-w-4xl max-h-screen px-2 pt-20 mx-auto space-y-8 overflow-hidden lg:px-8 lg:py-8">
+              <div className="max-w-5xl max-h-screen px-2 pt-20 mx-auto space-y-8 overflow-hidden lg:px-8 lg:py-8">
                 <div className="p-px rounded-lg shadow-lg bg-vc-border-gradient shadow-black/20">
                   <div className="rounded-lg bg-black p-3.5 lg:p-6 border border-gray-200/10">
                     <div className="space-y-10">{children}</div>

@@ -2,9 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import YouTube, { YouTubeEvent, type YouTubeProps } from "react-youtube";
 import { BoardInfo } from "../shared";
+import { cn } from "@/lib/utils";
 
 export type VideoPlayerProps = {
   board: BoardInfo;
+  className?: string;
 };
 
 const stateNames = {
@@ -17,8 +19,7 @@ const stateNames = {
 } as const;
 
 const opts: YouTubeProps["opts"] = {
-  height: "390",
-  width: "640",
+  width: "100%",
   playerVars: {
     // https://developers.google.com/youtube/player_parameters
     autoplay: 1,
@@ -28,7 +29,7 @@ const opts: YouTubeProps["opts"] = {
 const normalizeState = (state: number) =>
   stateNames[state as any as keyof typeof stateNames];
 
-export function VideoPlayer({ board }: VideoPlayerProps) {
+export function VideoPlayer({ board, className }: VideoPlayerProps) {
   const containerRef = useRef<HTMLIFrameElement>(null);
 
   const [currentTime, setCurrentTime] = useState(0);
@@ -44,7 +45,7 @@ export function VideoPlayer({ board }: VideoPlayerProps) {
 
   const createTimeUpdater = async (e: YouTubeEvent) => {
     if (interval.current) return;
-    console.log("create");
+    setCurrentTime(await e.target.getCurrentTime());
     interval.current = setInterval(async () => {
       const time = await e.target.getCurrentTime();
       console.log("time", time);
@@ -61,29 +62,23 @@ export function VideoPlayer({ board }: VideoPlayerProps) {
   }, []);
 
   return (
-    <>
-      <h1>
-        {!!interval.current ? "y" : "n"} {shouldUpdateTime ? "y" : "n"}
-        {currentTime}
-      </h1>
-      <YouTube
-        videoId={board.resourceId}
-        opts={opts}
-        onStateChange={(e) => {
-          const state = normalizeState(e.data);
-          console.log("state", state);
-          if (state === "playing") {
-            destroyTimeUpdater();
-            createTimeUpdater(e);
-          } else if (state === "paused") {
-            destroyTimeUpdater()
-          }
-        }}
-        onReady={(e) => {
-          setShouldUpdateTime(true);
-        }}
-      />
-    </>
+    <YouTube
+      className={cn("", className)}
+      videoId={board.resourceId}
+      opts={opts}
+      onStateChange={(e) => {
+        const state = normalizeState(e.data);
+        if (state === "playing") {
+          destroyTimeUpdater();
+          createTimeUpdater(e);
+        } else if (state === "paused") {
+          destroyTimeUpdater();
+        }
+      }}
+      onReady={(e) => {
+        setShouldUpdateTime(true);
+      }}
+    />
   );
 }
 
