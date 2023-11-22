@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 export type VideoPlayerProps = {
   board: BoardInfo;
+  updateTime: (t: number) => void;
+
   className?: string;
 };
 
@@ -29,27 +31,24 @@ const opts: YouTubeProps["opts"] = {
 const normalizeState = (state: number) =>
   stateNames[state as any as keyof typeof stateNames];
 
-export function VideoPlayer({ board, className }: VideoPlayerProps) {
+export function VideoPlayer({ board, className, updateTime }: VideoPlayerProps) {
   const containerRef = useRef<HTMLIFrameElement>(null);
 
-  const [currentTime, setCurrentTime] = useState(0);
   const [shouldUpdateTime, setShouldUpdateTime] = useState(false);
   const interval = useRef<NodeJS.Timeout | null>(null);
 
   const destroyTimeUpdater = () => {
     if (!interval.current) return;
-    console.log("destroy");
     clearInterval(interval.current);
     interval.current = null;
   };
 
   const createTimeUpdater = async (e: YouTubeEvent) => {
     if (interval.current) return;
-    setCurrentTime(await e.target.getCurrentTime());
+    updateTime(await e.target.getCurrentTime());
     interval.current = setInterval(async () => {
       const time = await e.target.getCurrentTime();
-      console.log("time", time);
-      setCurrentTime(time);
+      updateTime(time);
     }, 1000);
   };
 

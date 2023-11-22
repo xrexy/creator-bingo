@@ -2,6 +2,7 @@ import { api } from "@/trpc/server";
 import { notFound, redirect } from "next/navigation";
 import { BoardInfo } from "../shared";
 import VideoPlayer from "../_components/VideoPlayer";
+import Game from "../_components/Game";
 
 type PageProps = {
   params: { resourceId: string };
@@ -57,9 +58,10 @@ export default async function Page({ params }: PageProps) {
         </a>
       </div>
 
-      <div className="h-fit ">
-        <VideoPlayer board={board} />
-      </div>
+      <Game
+        board={board}
+        creator={creator}
+      />
     </div>
   );
 }

@@ -8,12 +8,10 @@ export type BoardCell = {
   checked: boolean;
 }
 
-export type Board = BoardCell[][];
+export type BingoBoard = BoardCell[][];
 
-/**
- * Space on the board (row, col) => can be a tuple([row, col]) or an object
- */
-export type BoardSpace = { row: number, col: number } | [number, number];
+
+export type BoardLocation = [number, number];
 
 const { bingoMap } = config.data
 type BingoMap = typeof bingoMap;
@@ -33,7 +31,7 @@ export const createUncheckedEntry = (entry: BoardEntry): BoardCell => ({ entry, 
 export const generateBoard = (size = 5) => {
   const entries = getBingoEntries({ includeFreeSpace: false })
 
-  const board: Board = [];
+  const board: BingoBoard = [];
 
   const centerIdx = Math.floor(size / 2);
 
@@ -62,4 +60,4 @@ export const generateBoard = (size = 5) => {
   return board;
 }
 
-export const createBoardSpace = (row: number, col: number): BoardSpace => ({ row, col });
+export const makeBoardLocation = (row: number, col: number): BoardLocation => [row, col];

@@ -33,7 +33,7 @@ export default function RootLayout({
       lang="en"
       className={`dark ${GeistSans.variable}`}
     >
-      <body className="overflow-y-auto bg-black ">
+      <body className="overflow-y-auto bg-black">
         <TRPCReactProvider headers={headers()}>
           <SessionProvider>
             <Toaster
