@@ -1,13 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Plus } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
-import CreateUploadSheet from "./CreateUploadSheet";
 import { BoardInfo } from "@/app/play/shared";
 import Hint from "@/components/hint";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import CreateUploadSheet from "./CreateUploadSheet";
 
 export type UserUploadsProps = {
   session: import("lucia").Session | null;
@@ -16,7 +18,11 @@ export type UserUploadsProps = {
 };
 
 export function UserUploads({ creator, session, boards }: UserUploadsProps) {
+  const pathname = usePathname();
   const [panelOpen, setPanelOpen] = useState(false);
+
+  const isInPathname = (b: BoardInfo) =>
+    pathname.startsWith(`/play/${b.resourceId}`);
 
   return (
     <div className="">
@@ -43,7 +49,7 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
             </Button>
           )}
           <SheetContent className="w-full xs:w-3/4">
-            <CreateUploadSheet   
+            <CreateUploadSheet
               creator={creator!}
               session={session!}
               boards={boards}
@@ -59,6 +65,10 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
         <div className="flex flex-col">
           {boards.map((board) => (
             <Link
+              className={cn(
+                "transition text-neutral-500 hover:text-sky-400",
+                isInPathname(board) && "text-sky-400 hover:text-sky-300"
+              )}
               href={`/play/${board.resourceId}`}
               key={board.resourceId}
             >
