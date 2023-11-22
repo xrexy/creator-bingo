@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { YouTubeVideo } from "@/app/client.types";
@@ -11,7 +11,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as context from 'next/headers'
 
-const getUpload = (db: Db, userId: string) => db.query.board.findMany({
+const getBoards = (db: Db, userId: string) => db.query.board.findMany({
   where: (u, { eq }) => eq(u.userId, userId),
   with: {
     user: true
@@ -64,14 +64,11 @@ const getYouTubeVideosInternal = async (o:
 
       const newToken = refreshRes.access_token;
 
-      console.log(newToken)
-    
       await db.update(creatorTable).set({
         accessToken: newToken
       }).where(eq(creatorTable.userId, userId))
 
-      // retry with new access token
-      return await getYouTubeVideosInternal({ ...o, refreshToken: newToken })
+      return getYouTubeVideosInternal({ ...o, refreshToken: newToken })
     }
 
     console.error(videosRes.error);
@@ -113,6 +110,27 @@ export const creatorRouter = createTRPCRouter({
 
     return getCreator(db, input)
   }),
+  getRecentBoards: publicProcedure.input(z.object({
+    limit: z.number().default(12),
+  }).default({})).query(async ({ ctx, input }) => {
+    const { db } = ctx;
+    const { limit } = input ?? {};
+
+    try {
+      return await db.query.board.findMany({
+        orderBy: [desc(board.createdAt)],
+        limit,
+        with: {
+          user: true,
+          creator: true,
+        }
+      })
+    } catch (e) {
+      console.error(e);
+    }
+
+    return []
+  }),
   getBoards: publicProcedure.input(z.object({
     userId: z.string(),
   })).query(async ({ ctx, input }) => {
@@ -120,7 +138,7 @@ export const creatorRouter = createTRPCRouter({
     const { userId } = input;
 
     try {
-      return await getUpload(db, userId)
+      return await getBoards(db, userId)
     } catch (e) {
       console.error(e);
     }
