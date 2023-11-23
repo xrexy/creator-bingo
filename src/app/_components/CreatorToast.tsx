@@ -56,7 +56,7 @@ export function CreatorToast() {
     if (toastId !== "1") {
       toast.dismiss(toastId);
     }
-  }, []);
+  }, [creatorToastIsHidden]);
 
   return <></>;
 }
