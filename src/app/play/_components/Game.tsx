@@ -14,7 +14,7 @@ export type GameProps = {
 
 function Player({ board }: { board: BoardInfo }) {
   const [currentTime, setCurrentTime] = useState(0);
-  
+
   return (
     <div className="w-[50%] h-fit ">
       <VideoPlayer
@@ -29,15 +29,17 @@ export function Game({ board, creator }: GameProps) {
   const [bingoBoard, setBingoBoard] = useState<BingoBoardType>([]);
 
   useEffect(() => {
-    // TODO somehow generate the board based on some id/seed, so it's the same each time it's rendered
-    setBingoBoard(generateBoard());
-  }, []);
+    setBingoBoard(generateBoard(board.resourceId));
+  }, [board.resourceId]);
 
   return (
     <div className="flex w-full gap-x-2">
       <Player board={board} />
       <div className="flex-1 min-h-[30rem]">
-        <BingoBoard bingoBoard={bingoBoard} />
+        <BingoBoard
+          resourceId={board.resourceId}
+          bingoBoard={bingoBoard}
+        />
       </div>
     </div>
   );

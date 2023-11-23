@@ -1,5 +1,6 @@
-import { config } from "../../config";
-import { randomNumber } from ".";
+import seedrandom from 'seedrandom'
+
+import * as config from "../../config";
 
 export type BoardEntry = [string, string] // [key, text]
 
@@ -13,7 +14,7 @@ export type BingoBoard = BoardCell[][];
 
 export type BoardLocation = [number, number];
 
-const { bingoMap } = config.data
+const { bingoMap } = config.config.data
 type BingoMap = typeof bingoMap;
 
 const bingoEntries = Object.entries(bingoMap)
@@ -28,7 +29,9 @@ export const getBingoEntries = <IncludeFree extends boolean>(o?: { includeFreeSp
 export const createUncheckedEntry = (entry: BoardEntry): BoardCell => ({ entry, checked: false });
 
 // size => size^2 => 5*5 = 25
-export const generateBoard = (size = 5) => {
+export const generateBoard = (seed: string, size = 5) => {
+  const rng = seedrandom(seed)
+
   const entries = getBingoEntries({ includeFreeSpace: false })
 
   const board: BingoBoard = [];
@@ -44,7 +47,8 @@ export const generateBoard = (size = 5) => {
     for (let i = 0; i < size; i++) {
       if (row[i]) continue; // skip if already filled
 
-      idx = randomNumber(0, entries.length - 1);
+      // idx = randomNumber(0, entries.length - 1);
+      idx = Math.floor(rng() * entries.length);
       row[i] = createUncheckedEntry(entries[idx]);
 
       entries.splice(idx, 1); // remove the entry from the copy

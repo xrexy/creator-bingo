@@ -1,21 +1,11 @@
-import {
-  type BingoBoard as BingoBoardType,
-  BoardCell,
-  makeBoardLocation,
-  BoardLocation,
-} from "@/lib/utils";
-import {
-  MutableRefObject,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { BoardLocation, type BingoBoard as BingoBoardType } from "@/lib/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import BingoCell from "./BingoCell";
 
 export type BingoBoardProps = {
   bingoBoard: BingoBoardType;
+  resourceId: string;
 };
 
 function isSameLocation(l1: BoardLocation, l2: BoardLocation): boolean {
@@ -42,23 +32,50 @@ const setKeys = Object.freeze([
   [4, 8, 12, 16, 20],
 ]);
 
-export function BingoBoard({ bingoBoard }: BingoBoardProps) {
+export function BingoBoard({ bingoBoard, resourceId }: BingoBoardProps) {
   // i hate have a separate state for this but I really dont want to convert board to a useState... seems like an even worse idea
   const [activeLocations, setActiveLocations] = useState<BoardLocation[]>([]);
 
   const [hasWon, setHasWon] = useState(false);
   const board = useRef(bingoBoard);
 
+  const scoreGame = useCallback(() => {
+    const sets = buildSets();
+
+    const scores = sets.map((set) => set.filter((cell) => cell.checked).length);
+
+    return scores.some((score) => score === 5);
+  }, []);
+
   useEffect(() => {
-    // board has already been snapshot
-    if (board.current.length > 0) return;
+    if (activeLocations.length === 0) return;
 
-    board.current = bingoBoard;
+    // save activeLocations in localstorage
+    localStorage.setItem(
+      `bingo-al-${resourceId}`,
+      JSON.stringify(activeLocations)
+    );
+  }, [resourceId, activeLocations]);
 
-    () => {
-      board.current = [];
-    };
-  }, [bingoBoard]);
+  useEffect(() => {
+    // load activeLocations from localstorage
+    const savedLocations = localStorage.getItem(`bingo-al-${resourceId}`);
+
+    if (board.current.length === 0) board.current = [...bingoBoard];
+    if (!savedLocations || board.current.length === 0) return;
+
+    const locations = JSON.parse(savedLocations) as BoardLocation[];
+
+    board.current = board.current.map((row, rowIdx) =>
+      row.map((cell, colIdx) => ({
+        ...cell,
+        checked: locations.some((loc) => isSameLocation(loc, [rowIdx, colIdx])),
+      }))
+    );
+
+    setActiveLocations(locations);
+    setHasWon(scoreGame());
+  }, [resourceId, bingoBoard, scoreGame]);
 
   // these location functions seem dumb idk might refactor if they ever become too laggy
   function addLocation(location: BoardLocation) {
@@ -85,16 +102,6 @@ export function BingoBoard({ bingoBoard }: BingoBoardProps) {
     return setKeys.map((keys) => keys.map((key) => flatBoard[key]));
   }
 
-  function scoreGame() {
-    const sets = buildSets();
-
-    const scores = sets.map((set) => set.filter((cell) => cell.checked).length);
-
-    console.log(scores);
-
-    return scores.some((score) => score === 5);
-  }
-
   return (
     <div className="grid w-full h-full grid-rows-5">
       {bingoBoard.map((row, rowIdx) => (
@@ -107,15 +114,19 @@ export function BingoBoard({ bingoBoard }: BingoBoardProps) {
               isSelected={activeLocations.some((location) =>
                 isSameLocation(location, [rowIdx, cellIdx])
               )}
-              id={`${rowIdx}-${cellIdx}`}
+              hasWon={hasWon}
               onSelected={() => {
                 toggleLocation([rowIdx, cellIdx]);
                 const isWin = scoreGame();
 
-                setHasWon(isWin);
+                if (!hasWon && isWin)
+                  toast.success("You won!", {
+                    icon: "🎉",
+                    position: "top-center",
+                    duration: 2.5 * 1000,
+                  });
 
-                if (isWin) console.error("WIN");
-                // hasWon();
+                setHasWon(isWin);
               }}
               key={`${rowIdx}-${cellIdx}`}
               cell={cell}

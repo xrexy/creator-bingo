@@ -104,6 +104,9 @@ dependencies:
   react-youtube:
     specifier: ^10.1.0
     version: 10.1.0(react@18.2.0)
+  seedrandom:
+    specifier: ^3.0.5
+    version: 3.0.5
   sharp:
     specifier: ^0.32.6
     version: 0.32.6
@@ -136,6 +139,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.2.15
+  '@types/seedrandom':
+    specifier: ^3.0.8
+    version: 3.0.8
   '@types/youtube-player':
     specifier: ^5.5.10
     version: 5.5.10
@@ -1707,6 +1713,10 @@ packages:
 
   /@types/scheduler@0.16.6:
     resolution: {integrity: sha512-Vlktnchmkylvc9SnwwwozTv04L/e1NykF5vgoQ0XTmI8DD+wxfjQuHuvHS3p0r2jz2x2ghPs2h1FVeDirIteWA==}
+
+  /@types/seedrandom@3.0.8:
+    resolution: {integrity: sha512-TY1eezMU2zH2ozQoAFAQFOPpvP15g+ZgSfTZt31AUUH/Rxtnz3H+A/Sv1Snw2/amp//omibc+AEkTaA8KUeOLQ==}
+    dev: true
 
   /@types/youtube-player@5.5.10:
     resolution: {integrity: sha512-A45rtI9nc4k/a1xdrSxE4tYO9MbGJg4esuCrTXNaB3v/ZqpeBQrD1OQwmKwZA9TMdg8VR8DPJY37pFOEBSuWIg==}
@@ -4417,6 +4427,10 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
+
+  /seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
     dev: false
 
   /selfsigned@2.4.1:

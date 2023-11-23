@@ -58,7 +58,6 @@ const getYouTubeVideosInternal = async (o:
       console.log(`invalid token, trying to refresh with ${refreshToken}`)
       if (!refreshToken) return { error: { cause: ActionError.NO_REFRESH_TOKEN } }
 
-      // TODO handle if refresh token has expired https://developers.google.com/identity/protocols/oauth2/web-server#exchange-authorization-code
       const url = `https://oauth2.googleapis.com/token?client_id=${config.env.OAUTH_GOOGLE_CLIENT_ID}&client_secret=${config.env.OAUTH_GOOGLE_SECRET}&refresh_token=${refreshToken}&grant_type=refresh_token`;
       const refreshRes = await fetch(url, {
         method: 'POST',

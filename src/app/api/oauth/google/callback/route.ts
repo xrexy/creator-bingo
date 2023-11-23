@@ -97,7 +97,6 @@ export const GET = async (req: NextRequest) => {
     const inRes = await db.insert(creatorTable).values({
       userId: session.user.userId,
       accessToken,
-      // TODO encrypt refresh and access
       refreshToken: refreshToken ? refreshToken : '',
       ...channel,
     }).onDuplicateKeyUpdate({
