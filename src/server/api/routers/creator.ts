@@ -10,6 +10,7 @@ import { creator as creatorTable, board } from "@/server/db/schema";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as context from 'next/headers'
+import { aes256gcm, createKey } from "@/lib/utils";
 
 const getBoards = (db: Db, userId: string) => db.query.board.findMany({
   where: (u, { eq }) => eq(u.userId, userId),
@@ -32,20 +33,29 @@ const getCreator = (db: Db, {
 })
 
 const getYouTubeVideosInternal = async (o:
-  { accessToken: string, userId: string, refreshToken: string | null, maxResults: number, playlistId: string }
-): Promise<YouTubeVideo[] | { error: { cause: ActionErrorType['NO_REFRESH_TOKEN'] } }> => {
+  { accessToken: string, userId: string, refreshToken: string | null, maxResults: number, playlistId: string, retriesLeft?: number }
+): Promise<YouTubeVideo[] | { error: { cause: ActionErrorType['NO_REFRESH_TOKEN' | 'INTERNAL'] } }> => {
+  if (o.retriesLeft === 0) return { error: { cause: ActionError.INTERNAL } }
+
   const { accessToken, maxResults, playlistId, refreshToken, userId } = o;
+  const aes = aes256gcm(createKey());
 
   const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet%2CcontentDetails&maxResults=${maxResults}&playlistId=${playlistId}&key=${config.env.GOOGLE_API_KEY}`;
-  const videosRes = await fetch(url, {
-    headers: {
-      authorization: `Bearer ${accessToken}`,
-      referer: 'http://localhost:3000'
-    },
-  })
-    .then(res => res.json())
 
-  if (videosRes.error) {
+  // if token is invalid we "cancel" the request
+  const videosRes = aes.isValidToken(accessToken) ?
+    (await fetch(url, {
+      headers: {
+        authorization: `Bearer ${aes.decrypt(accessToken)}`,
+        referer: 'http://localhost:3000'
+      },
+    })
+      .then(res => res.json()))
+    : null
+
+  console.log(videosRes)
+
+  if (!videosRes || videosRes?.error) {
     if (videosRes.error.code === 401 && videosRes.error.message.startsWith('Request had invalid authentication credentials.')) {
       console.log(`invalid token, trying to refresh with ${refreshToken}`)
       if (!refreshToken) return { error: { cause: ActionError.NO_REFRESH_TOKEN } }
@@ -60,15 +70,13 @@ const getYouTubeVideosInternal = async (o:
       })
         .then(res => res.json())
 
-      console.log(refreshRes)
-
-      const newToken = refreshRes.access_token;
+      const newToken = aes.encrypt(refreshRes.access_token);
 
       await db.update(creatorTable).set({
-        accessToken: newToken
+        accessToken: newToken,
       }).where(eq(creatorTable.userId, userId))
 
-      return getYouTubeVideosInternal({ ...o, refreshToken: newToken })
+      return getYouTubeVideosInternal({ ...o, refreshToken: newToken, retriesLeft: (o.retriesLeft ?? 3) - 1 })
     }
 
     console.error(videosRes.error);
@@ -193,7 +201,7 @@ export const creatorRouter = createTRPCRouter({
 
     return []
   }),
-  createUpload: publicProcedure.input(z.object({
+  createBoard: publicProcedure.input(z.object({
     userId: z.string(),
     title: z.string(),
     resourceId: z.string(),

@@ -1,7 +1,7 @@
 import { pick } from "@/lib/utils";
 import { api } from "@/trpc/server";
-import { CreatorToast } from "./_components/CreatorToast";
 import { BoardPreview } from "./_components/BoardPreview";
+import { CreatorToast } from "./_components/CreatorToast";
 
 export default async function Home() {
   const latestBoards = await api.creator.getRecentBoards();
@@ -29,15 +29,3 @@ export default async function Home() {
     </main>
   );
 }
-
-// example iframe
-// <iframe
-//     width="100%"
-//     height="315"
-//     onTimeUpdate={console.log}
-//     onTimeUpdateCapture={console.log}
-//     src="https://www.youtube.com/embed/CQchvFxE7WA"
-//     title="It&#39;s been a year..."
-//     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-//     allowFullScreen
-//   ></iframe>

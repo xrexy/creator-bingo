@@ -1,6 +1,6 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Query, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
@@ -49,7 +49,11 @@ export function TRPCReactProvider(props: {
       </api.Provider>
 
       {process.env.NODE_ENV !== "production" && (
-        <ReactQueryDevtools buttonPosition="bottom-left" position="left" initialIsOpen={false} />
+        <ReactQueryDevtools
+          buttonPosition="bottom-left"
+          position="bottom"
+          initialIsOpen={false}
+        />
       )}
     </QueryClientProvider>
   );

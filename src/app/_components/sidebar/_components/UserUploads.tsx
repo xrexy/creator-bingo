@@ -30,7 +30,7 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
         <h3>Your Boards</h3>
         <Sheet
           open={panelOpen}
-          // onOpenChange={setPanelOpen}
+          onOpenChange={setPanelOpen}
         >
           {session && !creator ? (
             <Hint content="Register as a creator before creating boards.">

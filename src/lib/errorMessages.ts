@@ -4,6 +4,7 @@ export enum ActionError {
   "UNAUTHENTICATED" = "UNAUTHENTICATED",
   "NOTHING_CHANGED" = "NOTHING_CHANGED",
   "NO_REFRESH_TOKEN" = "NO_REFRESH_TOKEN",
+  "INTERNAL" = "INTERNAL",
   "UNKNOWN" = "UNKNOWN",
 }
 
@@ -14,6 +15,7 @@ export const actionErrorMessages = {
   [ActionError.UNAUTHENTICATED]: "You are not logged in.",
   [ActionError.NOTHING_CHANGED]: "Nothing changed.",
   [ActionError.UNKNOWN]: "An unknown error occurred, please try again later.",
+  [ActionError.INTERNAL]: "An internal error occurred, please try again later. If this error persists, please notify our staff.",
   [ActionError.NO_REFRESH_TOKEN]: "No refresh token found. This is likely a bug, please report it or regenerate it from the Tokens Settings page.",
 } as const satisfies Record<ActionError, string>;
 

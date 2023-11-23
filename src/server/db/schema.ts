@@ -51,8 +51,8 @@ export const creator = mysqlTable('creator', {
   id: int("id").primaryKey().autoincrement(),
   userId: varchar("user_id", { length: 15 }).notNull(),
 
-  accessToken: varchar("access_token", { length: 255 }).notNull(),
-  refreshToken: varchar("refresh_token", { length: 255 }).notNull(),
+  accessToken: varchar("access_token", { length: 1024 }).notNull(),
+  refreshToken: varchar("refresh_token", { length: 512 }).notNull(),
 
   channelTitle: varchar("channel_title", { length: 255 }).notNull(),
   channelId: varchar("channel_id", { length: 255 }).notNull().unique(),

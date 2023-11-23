@@ -5,10 +5,10 @@ import { z } from "zod";
 const generateOAuthConfigs = (providers: typeof oauthProviders): {
   [key in `OAUTH_${(typeof providers)[number]}_CLIENT_ID`]: z.ZodString
 } & {
-  [key in `OAUTH_${(typeof providers)[number]}_SECRET`]: z.ZodString
-} & {
-  [key in `OAUTH_${(typeof providers)[number]}_REDIRECT_URI`]?: z.ZodOptional<z.ZodString>
-} => {
+    [key in `OAUTH_${(typeof providers)[number]}_SECRET`]: z.ZodString
+  } & {
+    [key in `OAUTH_${(typeof providers)[number]}_REDIRECT_URI`]?: z.ZodOptional<z.ZodString>
+  } => {
   const result = {} as any;
   for (const provider of providers) {
     result[`OAUTH_${provider}_CLIENT_ID`] = z.string().min(1);
@@ -31,6 +31,8 @@ export const env = createEnv({
 
     ...generateOAuthConfigs(oauthProviders),
     GOOGLE_API_KEY: z.string().min(1),
+
+    SECRET_KEY: z.string().min(process.env.NODE_ENV === 'production' ? 64 : 1),
 
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },

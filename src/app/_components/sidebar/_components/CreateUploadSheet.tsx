@@ -1,10 +1,18 @@
 "use client";
 
 import { Label } from "@radix-ui/react-label";
+import { } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
+import { createUpload } from "@/app/_actions/createUpload";
 import { NoneNullDeep, YouTubeVideo } from "@/app/client.types";
+import { actionErrorMessages } from "@/lib/errorMessages";
+import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { UserUploadsProps } from "./UserUploads";
+import VideoForm from "./VideoForm";
 
 import { FormSubmit } from "@/components/form/form-submit";
 import { YouTubeActivity } from "@/components/logo/youtubeActivity";
@@ -17,14 +25,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { useEffect, useState } from "react";
-import VideoForm from "./VideoForm";
-import { createUpload } from "@/app/_actions/createUpload";
-import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { actionErrorMessages } from "@/lib/errorMessages";
-import toast from "react-hot-toast";
 
 export type CreateUploadSheetProps = NoneNullDeep<UserUploadsProps> & {
   onClose: () => void;
@@ -37,6 +38,7 @@ export function CreateUploadSheet({
   onClose,
 }: CreateUploadSheetProps) {
   const router = useRouter();
+  const trpcUtils = api.useUtils();
   const vidReq = api.creator.getYouTubeVideos.useQuery(
     {
       userId: creator.userId,
@@ -144,9 +146,14 @@ export function CreateUploadSheet({
                   userId: session.user.userId,
                 });
 
+                if (typeof res.data === "object" && res.data.error) {
+                  toast.error(actionErrorMessages[res.data.error.cause]);
+                  return;
+                }
+                
                 onClose();
-
-                router.refresh();
+ 
+                router.push(`/play/${fd.get("resourceId")}`, {});
               }}
             >
               Submit

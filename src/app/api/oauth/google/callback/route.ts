@@ -11,6 +11,7 @@ import { SearchParamError } from "@/lib/errorMessages";
 import { api } from "@/trpc/server";
 import { eq } from "drizzle-orm";
 import * as context from 'next/headers';
+import { aes256gcm, createKey } from "@/lib/utils";
 
 type Channel = Pick<typeof creatorTable.$inferInsert, 'channelId' | 'channelTitle' | 'channelCustomUrl' | 'channelThumbnail'>
 
@@ -26,7 +27,10 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const { googleTokens } = await googleAuth.validateCallback(code);
-    const { accessToken, refreshToken } = googleTokens;
+    const { accessToken: rawAccessToken, refreshToken } = googleTokens;
+
+    const cipher = aes256gcm(createKey());
+    const accessToken = cipher.encrypt(rawAccessToken);
 
     // console.log('google', googleUser)
 
@@ -67,7 +71,7 @@ export const GET = async (req: NextRequest) => {
 
     const channelRes = await fetch(url, {
       headers: {
-        authorization: `Bearer ${accessToken}`,
+        authorization: `Bearer ${rawAccessToken}`,
         referer: 'http://localhost:3000'
       },
     })
