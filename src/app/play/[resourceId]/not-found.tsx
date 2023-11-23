@@ -15,7 +15,7 @@ export default function Page(o: any) {
             Are you sure that id{" "}
             <span className="px-1 rounded-md bg-gray-200/10">
               {pathname.split("/play/")[1]}
-            </span>
+            </span>{" "}
             is correct?
           </p>
         </div>
