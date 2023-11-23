@@ -1,8 +1,7 @@
 import { api } from "@/trpc/server";
 import { notFound, redirect } from "next/navigation";
-import { BoardInfo } from "../shared";
-import VideoPlayer from "../_components/VideoPlayer";
 import Game from "../_components/Game";
+import { BoardInfo } from "../shared";
 
 type PageProps = {
   params: { resourceId: string };
