@@ -24,12 +24,14 @@ export const GET = async (req: NextRequest) => {
 
     const getUser = async () => {
       const existingUser = await getExistingUser();
-      if(existingUser) return existingUser;
+      if (existingUser) return existingUser;
 
-      return await createUser({ attributes: {
-        username: twitchUser.display_name,
-        avatar: twitchUser.profile_image_url
-      }})
+      return await createUser({
+        attributes: {
+          username: twitchUser.display_name,
+          avatar: twitchUser.profile_image_url
+        }
+      })
     }
 
     const user = await getUser();
@@ -51,7 +53,7 @@ export const GET = async (req: NextRequest) => {
 
   } catch (e) {
     console.log(e);
-    if(e instanceof OAuthRequestError) {
+    if (e instanceof OAuthRequestError) {
       // url has been tampered with (prob invalid code)
       return new Response(null, { status: 400 });
     }

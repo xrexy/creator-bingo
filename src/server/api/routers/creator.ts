@@ -53,8 +53,6 @@ const getYouTubeVideosInternal = async (o:
       .then(res => res.json()))
     : null
 
-  console.log(videosRes)
-
   if (!videosRes || videosRes?.error) {
     if (videosRes.error.code === 401 && videosRes.error.message.startsWith('Request had invalid authentication credentials.')) {
       console.log(`invalid token, trying to refresh with ${refreshToken}`)

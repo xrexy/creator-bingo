@@ -12,8 +12,6 @@ export default async function Page({ params }: PageProps) {
   const { resourceId } = params;
   const res = await api.creator.getBoard({ resourceId });
 
-  console.log(res);
-
   if (!res || res.type == "error") {
     return void redirect("/");
   }
