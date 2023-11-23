@@ -1,11 +1,10 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import {
+  Tooltip,
+  TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-  TooltipContent,
-  Tooltip,
 } from "./ui/tooltip";
-import { PlusIcon } from "lucide-react";
 
 export type HintProps = {
   content: string | React.ReactNode;
