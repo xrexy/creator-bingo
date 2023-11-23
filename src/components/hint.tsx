@@ -5,6 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { desc } from "drizzle-orm";
 
 export type HintProps = {
   content: string | React.ReactNode;
@@ -12,22 +13,39 @@ export type HintProps = {
   children?: React.ReactNode;
   delayDuration?: number;
   sideOffset?: number;
+  description?: string;
   side?: "top" | "bottom" | "left" | "right";
 };
 
 export function Hint({
-  children = (
-    <QuestionMarkCircleIcon
-      height={16}
-      width={16}
-      className="text-sky-400"
-    />
-  ),
+  children: _children,
   content,
   sideOffset,
   delayDuration = 0,
+  description,
   side,
 }: HintProps) {
+  const children = _children ?? (
+    <>
+      {description ? (
+        <div className="flex items-center gap-x-2">
+          <QuestionMarkCircleIcon
+            height={16}
+            width={16}
+            className="text-sky-400"
+          />
+          {description}
+        </div>
+      ) : (
+        <QuestionMarkCircleIcon
+          height={16}
+          width={16}
+          className="text-sky-400"
+        />
+      )}
+    </>
+  );
+
   return (
     <TooltipProvider>
       <Tooltip delayDuration={delayDuration}>
