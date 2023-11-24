@@ -32,6 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      style={{ backgroundColor: "black" }}
       className={`dark ${GeistSans.variable}`}
     >
       <body className="overflow-y-auto bg-black">

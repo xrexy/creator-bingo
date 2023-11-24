@@ -25,7 +25,7 @@ export function SettingsLink({ tab }: { tab: SettingsTab }) {
         variant="ghost"
         className={cn(
           "group w-full",
-          tab === "danger" ? "hover:bg-red-600/50" : undefined
+          // tab === "danger" ? "hover:bg-red-600/50" : undefined
         )}
       >
         {capitalize(tab)}
