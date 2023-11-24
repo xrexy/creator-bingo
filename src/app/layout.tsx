@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
+import BetaOverlay from "@/components/BetaOverlay";
 import { SessionProvider } from "./_components/context/useCurrentSession";
 import { Sidebar } from "./_components/sidebar";
 
@@ -48,6 +49,8 @@ export default function RootLayout({
                 },
               }}
             />
+
+            <BetaOverlay />
 
             <div className="absolute inset-0 bg-[radial-gradient(rgba(229,231,235,0.1)_1px,transparent_1px)] [background-size:16px_16px] z-[-1]" />
 
