@@ -93,23 +93,31 @@ export function CreateBoardSheet({
               <>
                 {Array.isArray(vidReq.data) ? (
                   <>
-                    {vidReq.data
-                      .filter((vid) => {
-                        return !boards.some(
-                          (b) => b.resourceId === vid.resourceId
-                        );
-                      })
-                      .map((video) => (
-                        <VideoForm
-                          key={video.id}
-                          selected={selectedVideo}
-                          onSelected={(vid) => {
-                            setSelectedVideo(vid);
-                            setTitle(vid.title);
-                          }}
-                          video={video}
-                        />
-                      ))}
+                    {vidReq.data.length === 0 ? (
+                      <p className="col-span-2 text-red-400">
+                        You have no videos on your channel.
+                      </p>
+                    ) : (
+                      <>
+                        {vidReq.data
+                          .filter((vid) => {
+                            return !boards.some(
+                              (b) => b.resourceId === vid.resourceId
+                            );
+                          })
+                          .map((video) => (
+                            <VideoForm
+                              key={video.id}
+                              selected={selectedVideo}
+                              onSelected={(vid) => {
+                                setSelectedVideo(vid);
+                                setTitle(vid.title);
+                              }}
+                              video={video}
+                            />
+                          ))}
+                      </>
+                    )}
                   </>
                 ) : (
                   <p className="col-span-2 text-red-400">
