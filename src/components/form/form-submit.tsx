@@ -12,7 +12,8 @@ type FormSubmitProps = {
   title?: string;
   variant: ButtonVariant;
   size: ButtonSize;
-  formAction: ButtonProps['formAction']
+  formAction: ButtonProps['formAction'];
+  onClick: ButtonProps['onClick'];
 }>;
 
 export const FormSubmit = ({
@@ -24,11 +25,13 @@ export const FormSubmit = ({
   formAction,
   size = "sm",
   variant = "default",
+  onClick,
 }: FormSubmitProps) => {
   const { pending } = useFormStatus();
 
   return (
     <Button
+      onClick={onClick}
       formAction={formAction}
       id={id}
       title={title}

@@ -11,6 +11,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import * as context from 'next/headers'
 import { aes256gcm, createKey } from "@/lib/utils";
+import { api } from "@/trpc/server";
 
 const getBoards = (db: Db, userId: string) => db.query.board.findMany({
   where: (u, { eq }) => eq(u.userId, userId),
@@ -144,6 +145,26 @@ export const creatorRouter = createTRPCRouter({
 
     try {
       return await getBoards(db, userId)
+    } catch (e) {
+      console.error(e);
+    }
+
+    return []
+  }),
+  getBoardsWithCreator: publicProcedure.input(z.object({
+    userId: z.string(),
+  })).query(({ ctx, input }) => {
+    const { db } = ctx;
+    const { userId } = input;
+
+    try {
+      return db.query.board.findMany({
+        where: (u, { eq }) => eq(u.userId, userId),
+        with: {
+          user: true,
+          creator: true,
+        }
+      })
     } catch (e) {
       console.error(e);
     }

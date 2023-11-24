@@ -1,15 +1,13 @@
 "use server"
 
+import { cookies } from 'next/headers';
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { oauthProviders, type OAuthProvider, oauthProviderStateKey } from "@/constants";
-
-import { createAction, createAuthAction } from "@/lib/save-action";
-import { auth, googleAuth, twitchAuth } from "@/server/lucia";
-
-import { cookies } from 'next/headers'
 import { config } from "@/config";
-import { RedirectType, redirect } from "next/navigation";
+import { oauthProviderStateKey, oauthProviders, type OAuthProvider } from "@/constants";
+import { createAuthAction } from "@/lib/save-action";
+import { googleAuth, twitchAuth } from "@/server/lucia";
 
 const urlProviders = {
   GOOGLE: googleAuth,

@@ -1,17 +1,17 @@
 "use client";
 
 import { Label } from "@radix-ui/react-label";
-import { } from "@tanstack/react-query";
+import {} from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import { createUpload } from "@/app/_actions/createUpload";
+import { createBoard } from "@/app/_actions/createBoard";
 import { NoneNullDeep, YouTubeVideo } from "@/app/client.types";
 import { actionErrorMessages } from "@/lib/errorMessages";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { UserUploadsProps } from "./UserUploads";
+import { UserBoardsProps } from "./UserBoards";
 import VideoForm from "./VideoForm";
 
 import { FormSubmit } from "@/components/form/form-submit";
@@ -27,16 +27,16 @@ import {
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export type CreateUploadSheetProps = NoneNullDeep<UserUploadsProps> & {
+export type CreateBoardSheetProps = NoneNullDeep<UserBoardsProps> & {
   onClose: () => void;
 };
 
-export function CreateUploadSheet({
+export function CreateBoardSheet({
   creator,
   session,
   boards,
   onClose,
-}: CreateUploadSheetProps) {
+}: CreateBoardSheetProps) {
   const router = useRouter();
   const trpcUtils = api.useUtils();
   const vidReq = api.creator.getYouTubeVideos.useQuery(
@@ -140,7 +140,7 @@ export function CreateUploadSheet({
           <SheetClose asChild>
             <FormSubmit
               formAction={async (fd) => {
-                const res = await createUpload({
+                const res = await createBoard({
                   title: fd.get("title") as string,
                   resourceId: fd.get("resourceId") as string,
                   userId: session.user.userId,
@@ -150,9 +150,9 @@ export function CreateUploadSheet({
                   toast.error(actionErrorMessages[res.data.error.cause]);
                   return;
                 }
-                
+
                 onClose();
- 
+
                 router.push(`/play/${fd.get("resourceId")}`, {});
               }}
             >
@@ -165,5 +165,4 @@ export function CreateUploadSheet({
   );
 }
 
-export default CreateUploadSheet;
-
+export default CreateBoardSheet;

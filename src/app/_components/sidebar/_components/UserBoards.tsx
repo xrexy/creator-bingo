@@ -9,15 +9,15 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import CreateUploadSheet from "./CreateUploadSheet";
+import CreateBoardSheet from "./CreateBoardSheet";
 
-export type UserUploadsProps = {
+export type UserBoardsProps = {
   session: import("lucia").Session | null;
   creator: import("@/app/client.types").Creator | undefined;
   boards: BoardInfo[];
 };
 
-export function UserUploads({ creator, session, boards }: UserUploadsProps) {
+export function UserBoards({ creator, session, boards }: UserBoardsProps) {
   const pathname = usePathname();
   const [panelOpen, setPanelOpen] = useState(false);
 
@@ -49,7 +49,7 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
             </Button>
           )}
           <SheetContent className="w-full xs:w-3/4">
-            <CreateUploadSheet
+            <CreateBoardSheet
               creator={creator!}
               session={session!}
               boards={boards}
@@ -81,5 +81,5 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
   );
 }
 
-export default UserUploads;
+export default UserBoards;
 

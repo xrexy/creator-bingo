@@ -6,24 +6,70 @@ import { useRouter } from "next/navigation";
 
 import { Creator } from "../client.types";
 import { BoardInfo } from "../play/shared";
-import { UserGroupIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, UserGroupIcon } from "@heroicons/react/24/solid";
+import { Button } from "@/components/ui/button";
+import { deleteBoard } from "../_actions/deleteBoard";
+import { FormSubmit } from "@/components/form/form-submit";
+import toast from "react-hot-toast";
 
-export function BoardPreview({
-  board: { resourceId, title, creator, createdAt, publisher },
-}: {
+export type BoardPreviewProps = {
   board: BoardInfo & { creator: Creator | undefined };
-}) {
-  const router = useRouter();
+  showDelete?: boolean;
+};
 
-  const stopPropagation = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
+const stopPropagation = (e: React.MouseEvent) => {
+  e.stopPropagation();
+};
+
+function DeleteAction({ resourceId }: { resourceId: string }) {
+  return (
+    <form
+      action={() => {
+        const execution = (async () => {
+          const res = await deleteBoard({ resourceId });
+          if (!res.data?.ok) {
+            console.log(res.data);
+            throw new Error("Failed to delete");
+          }
+
+          return res;
+        })();
+        toast.promise(
+          execution,
+          {
+            loading: "Deleting...",
+            success: "Deleted!",
+            error:
+              "Failed to delete. Please try again, and if the problem persists, contact support.",
+          },
+          {
+            position: "top-center",
+          }
+        );
+      }}
+    >
+      <FormSubmit
+        onClick={stopPropagation}
+        size="icon"
+        variant="ghost"
+      >
+        <TrashIcon
+          height={16}
+          width={16}
+        />
+      </FormSubmit>
+    </form>
+  );
+}
+
+export function BoardPreview({ board, showDelete }: BoardPreviewProps) {
+  const { resourceId, creator, title } = board;
+
+  const router = useRouter();
 
   const navigateToBoard = () => {
     router.push(`/play/${resourceId}`);
   };
-
-  console.log(creator);
 
   return (
     <button
@@ -55,21 +101,24 @@ export function BoardPreview({
             <UserGroupIcon />
           )}
         </div>
-        <div className="flex flex-col items-start flex-1 ">
-          <h3 className="font-semibold ">{title}</h3>
-          {creator ? (
-            <a
-              className="text-sm text-sky-400"
-              referrerPolicy="no-referrer"
-              target="_blank"
-              href={`https://youtube.com/channel/${creator.channelId}`}
-              onClick={stopPropagation}
-            >
-              {creator.channelCustomUrl ?? creator.channelTitle}
-            </a>
-          ) : (
-            <p className="text-sm text-sky-400">Deleted</p>
-          )}
+        <div className="flex items-center justify-between w-full">
+          <div className="flex flex-col items-start flex-1 ">
+            <h3 className="font-semibold ">{title}</h3>
+            {creator ? (
+              <a
+                className="text-sm text-sky-400"
+                referrerPolicy="no-referrer"
+                target="_blank"
+                href={`https://youtube.com/channel/${creator.channelId}`}
+                onClick={stopPropagation}
+              >
+                {creator.channelCustomUrl ?? creator.channelTitle}
+              </a>
+            ) : (
+              <p className="text-sm text-sky-400">Deleted</p>
+            )}
+          </div>
+          {showDelete && <DeleteAction resourceId={resourceId} />}
         </div>
       </div>
     </button>

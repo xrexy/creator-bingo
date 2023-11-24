@@ -2,7 +2,7 @@ import { api } from "@/trpc/server";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CreatorsCount, SidebarUserSection } from ".";
-import UserUploads from "./_components/UserUploads";
+import UserBoards from "./_components/UserBoards";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export async function Sidebar() {
@@ -53,7 +53,7 @@ export async function Sidebar() {
       </div>
 
       <ScrollArea className="w-full px-4">
-        <UserUploads
+        <UserBoards
           creator={creator}
           session={session}
           boards={boards.map((b) => ({
