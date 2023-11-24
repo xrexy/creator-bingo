@@ -33,7 +33,7 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
           onOpenChange={setPanelOpen}
         >
           {session && !creator ? (
-            <Hint content="Register as a creator before creating boards.">
+            <Hint content="Register as a creator to create new boards.">
               <Plus size={16} />
             </Hint>
           ) : (
@@ -59,7 +59,7 @@ export function UserUploads({ creator, session, boards }: UserUploadsProps) {
         </Sheet>
       </div>
 
-      {!creator || boards.length == 0 ? (
+      {boards.length == 0 ? (
         <p className="text-sm text-muted-foreground">Nothing to show.</p>
       ) : (
         <div className="flex flex-col">
