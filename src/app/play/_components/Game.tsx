@@ -9,7 +9,7 @@ import BingoBoard from "./BingoBoard";
 
 export type GameProps = {
   board: BoardInfo;
-  creator: Creator;
+  creator: Creator | undefined;
 };
 
 function Player({ board }: { board: BoardInfo }) {
@@ -25,7 +25,7 @@ function Player({ board }: { board: BoardInfo }) {
   );
 }
 
-export function Game({ board, creator }: GameProps) {
+export function Game({ board }: GameProps) {
   const [bingoBoard, setBingoBoard] = useState<BingoBoardType>([]);
 
   useEffect(() => {

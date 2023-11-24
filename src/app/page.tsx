@@ -17,7 +17,7 @@ export default async function Home() {
             board={{
               createdAt: new Date(board.createdAt * 1000),
               publisher: { ...board.user },
-              creator: { ...board.creator },
+              creator: board.creator,
 
               ...pick(board, ["resourceId", "title"]),
             }}

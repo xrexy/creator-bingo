@@ -21,8 +21,8 @@ export default async function Page() {
       />
 
       <div className="flex flex-col items-start gap-1 text-neutral-500">
-        <h3 className="pb-2 text-lg font-semibold text-white">
-          YouTube Access Token
+        <h3 className="pt-2 text-lg font-semibold text-white">
+          YouTube Tokens
         </h3>
         <Hint
           side="right"
@@ -37,18 +37,12 @@ export default async function Page() {
           content="The access token is encrypted using our 'AES 256 GCM' algorithm and stored together with it's refresh token."
           description="How is it stored?"
         />
-        {/* implement opting out(prob deleting creator account. But would be kinda dumb if all boards are deleted as well) */}
-      </div>
-
-      {/* {session?.user ? (
-        <RefreshToken
-          creator={creator}
-          session={session}
+        <Hint
+          side="right"
+          content="Since tokens are linked to your creator profile, you can revoke them by unlinking your YouTube channel from the Profile settings page."
+          description="How do I revoke it?"
         />
-      ) : (
-        <p>You have to be logged in to access this page.</p>
-      )} */}
+      </div>
     </>
   );
 }
-

@@ -26,9 +26,9 @@ export default async function Page({ params }: PageProps) {
     },
   };
 
-  const creator = (await api.creator.getCreator({
+  const creator = await api.creator.getCreator({
     userId: board.publisher.id,
-  }))!;
+  });
 
   return (
     <div className="w-full overflow-hidden">
@@ -36,14 +36,18 @@ export default async function Page({ params }: PageProps) {
         <div className="flex items-center gap-[0.5ch]">
           <h1 className="text-lg font-bold">{board.title}</h1>
           <span className="text-neutral-500">by</span>
-          <a
-            className="text-sky-400"
-            target="_blank"
-            referrerPolicy="no-referrer"
-            href={`https://youtube.com/channel/${creator.channelId}`}
-          >
-            {creator.channelCustomUrl ?? creator.channelTitle}
-          </a>
+          {creator ? (
+            <a
+              className="text-sky-400"
+              target="_blank"
+              referrerPolicy="no-referrer"
+              href={`https://youtube.com/channel/${creator.channelId}`}
+            >
+              {creator.channelCustomUrl ?? creator.channelTitle}
+            </a>
+          ) : (
+            <p className="text-sky-400">Deleted</p>
+          )}
         </div>
         <a
           className="text-sky-400"

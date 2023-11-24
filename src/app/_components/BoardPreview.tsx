@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 
 import { Creator } from "../client.types";
 import { BoardInfo } from "../play/shared";
+import { UserGroupIcon } from "@heroicons/react/24/solid";
 
 export function BoardPreview({
   board: { resourceId, title, creator, createdAt, publisher },
 }: {
-  board: BoardInfo & { creator: Creator };
+  board: BoardInfo & { creator: Creator | undefined };
 }) {
   const router = useRouter();
 
@@ -21,6 +22,8 @@ export function BoardPreview({
   const navigateToBoard = () => {
     router.push(`/play/${resourceId}`);
   };
+
+  console.log(creator);
 
   return (
     <button
@@ -40,25 +43,33 @@ export function BoardPreview({
 
       <div className="flex w-full gap-2 p-2">
         <div className="pt-1">
-          <Image
-            src={creator.channelThumbnail}
-            alt="avatar"
-            className="object-cover rounded-full"
-            width={32}
-            height={32}
-          />
+          {creator ? (
+            <Image
+              src={creator.channelThumbnail}
+              alt="avatar"
+              className="object-cover rounded-full"
+              width={32}
+              height={32}
+            />
+          ) : (
+            <UserGroupIcon />
+          )}
         </div>
         <div className="flex flex-col items-start flex-1 ">
           <h3 className="font-semibold ">{title}</h3>
-          <a
-            className="text-sm text-sky-400"
-            referrerPolicy="no-referrer"
-            target="_blank"
-            href={`https://youtube.com/channel/${creator.channelId}`}
-            onClick={stopPropagation}
-          >
-            {creator.channelCustomUrl ?? creator.channelTitle}
-          </a>
+          {creator ? (
+            <a
+              className="text-sm text-sky-400"
+              referrerPolicy="no-referrer"
+              target="_blank"
+              href={`https://youtube.com/channel/${creator.channelId}`}
+              onClick={stopPropagation}
+            >
+              {creator.channelCustomUrl ?? creator.channelTitle}
+            </a>
+          ) : (
+            <p className="text-sm text-sky-400">Deleted</p>
+          )}
         </div>
       </div>
     </button>

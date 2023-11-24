@@ -1,21 +1,21 @@
 "use client";
 
-import { Trash } from "lucide-react";
 import { useAction } from "next-safe-action/hook";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { type ElementRef, useEffect, useRef } from "react";
+import { useEffect, useRef, type ElementRef } from "react";
 import toast from "react-hot-toast";
 
 import { deleteCreator as deleteCreatorAction } from "@/app/_actions/deleteCreator";
 import { initOauthLogin } from "@/app/_actions/initOauthLogin";
-import { FormSubmit } from "@/components/form/form-submit";
-import GoogleLogo from "@/components/logo/google";
-import { Label } from "@/components/ui/label";
 import {
   isValidSearchParamErrorOrDefault,
   searchParamErrorMesssages,
 } from "@/lib/errorMessages";
+
+import { FormSubmit } from "@/components/form/form-submit";
+import GoogleLogo from "@/components/logo/google";
+import { Label } from "@/components/ui/label";
 
 function DeleteCreatorForm({
   name,
@@ -47,11 +47,25 @@ function DeleteCreatorForm({
         </p>
       </div>
       <FormSubmit
-        title="Disconnect YouTube Channel"
+        title="Unlink Channel"
         className="h-full aspect-square hover:bg-red-600/50"
         variant="ghost"
       >
-        <Trash size={16} />
+        {/* Unlink Icon */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 14 14"
+        >
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.14 7.13L1.27 9a2.65 2.65 0 0 0 0 3.74h0a2.65 2.65 0 0 0 3.74 0l1.11-1.11M9 9.5h1.86a2.64 2.64 0 0 0 2.64-2.64h0a2.64 2.64 0 0 0-2.64-2.64H8.22M7 .5l-.5 2m-6 1l2 1m.5-4l1 2"
+          />
+        </svg>
       </FormSubmit>
     </form>
   );
@@ -72,7 +86,7 @@ export function YouTubeChannelForm({
   useEffect(() => {
     if (!error) return;
 
-    const validError = isValidSearchParamErrorOrDefault(error, 'UNKNOWN');
+    const validError = isValidSearchParamErrorOrDefault(error, "UNKNOWN");
     toast.error(searchParamErrorMesssages[validError]); // will be fired twice in dev cause of strict mode
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.delete("error");
