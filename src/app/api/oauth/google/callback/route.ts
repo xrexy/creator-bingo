@@ -69,6 +69,7 @@ export const GET = async (req: NextRequest) => {
 
     const url = `https://youtube.googleapis.com/youtube/v3/channels?part=id,snippet&key=${env.GOOGLE_API_KEY}&mine=true`
 
+    console.log(rawAccessToken);
     const channelRes = await fetch(url, {
       headers: {
         authorization: `Bearer ${rawAccessToken}`,
