@@ -78,6 +78,7 @@ export const GET = async (req: NextRequest) => {
       .then(res => res.json())
 
     const data = channelRes.items?.[0]
+    console.log(data);
     if (!data || !data.snippet) {
       return new Response(null, {
         status: 302,
