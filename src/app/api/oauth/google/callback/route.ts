@@ -32,8 +32,6 @@ export const GET = async (req: NextRequest) => {
     const cipher = aes256gcm(createKey());
     const accessToken = cipher.encrypt(rawAccessToken);
 
-    // console.log('google', googleUser)
-
     const authRequest = auth.handleRequest("GET", context);
     const session = await authRequest.validate();
     if (!session?.user) return new Response(null, { status: 401 })
@@ -41,7 +39,7 @@ export const GET = async (req: NextRequest) => {
     const creator = refreshToken ? await api.creator.getCreator({
       userId: session.user.userId
     }) : null
-    console.log(creator);
+    
     if (refreshToken && creator) {
       // creator already exists we just update the tokens
       try {
@@ -69,7 +67,6 @@ export const GET = async (req: NextRequest) => {
 
     const url = `https://youtube.googleapis.com/youtube/v3/channels?part=id,snippet&key=${env.GOOGLE_API_KEY}&mine=true`
 
-    console.log({ rawAccessToken, r: env.BASE_URL });
     const channelRes = await fetch(url, {
       headers: {
         authorization: `Bearer ${rawAccessToken}`,
@@ -79,7 +76,6 @@ export const GET = async (req: NextRequest) => {
       .then(res => res.json())
 
     const data = channelRes.items?.[0]
-    console.log(data);
     if (!data || !data.snippet) {
       return new Response(null, {
         status: 302,
