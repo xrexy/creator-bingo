@@ -12,6 +12,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import * as context from 'next/headers'
 import { aes256gcm, createKey } from "@/lib/utils";
 import { api } from "@/trpc/server";
+import env from "@/config/env";
 
 const getBoards = (db: Db, userId: string) => db.query.board.findMany({
   where: (u, { eq }) => eq(u.userId, userId),
@@ -48,7 +49,7 @@ const getYouTubeVideosInternal = async (o:
     (await fetch(url, {
       headers: {
         authorization: `Bearer ${aes.decrypt(accessToken)}`,
-        referer: 'http://localhost:3000'
+        referer: env.BASE_URL
       },
     })
       .then(res => res.json()))
@@ -63,7 +64,7 @@ const getYouTubeVideosInternal = async (o:
       const refreshRes = await fetch(url, {
         method: 'POST',
         headers: {
-          referer: 'http://localhost:3000'
+          referer: env.BASE_URL
         },
       })
         .then(res => res.json())

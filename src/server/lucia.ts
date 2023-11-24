@@ -23,13 +23,13 @@ export const auth = lucia({
 export const twitchAuth = twitch(auth, {
   clientId: env.OAUTH_TWITCH_CLIENT_ID,
   clientSecret: env.OAUTH_TWITCH_SECRET,
-  redirectUri: env.OAUTH_TWITCH_REDIRECT_URI ?? 'http://localhost:3000/api/oauth/twitch/callback'
+  redirectUri: env.OAUTH_TWITCH_REDIRECT_URI ?? `${env.BASE_URL}/api/oauth/twitch/callback`
 })
 
 export const googleAuth = google(auth, {
   clientId: env.OAUTH_GOOGLE_CLIENT_ID,
   clientSecret: env.OAUTH_GOOGLE_SECRET,
-  redirectUri: env.OAUTH_GOOGLE_REDIRECT_URI ?? 'http://localhost:3000/api/oauth/google/callback',
+  redirectUri: env.OAUTH_GOOGLE_REDIRECT_URI ?? `${env.BASE_URL}/api/oauth/google/callback`,
   scope: ["https://www.googleapis.com/auth/youtube.readonly"],
   accessType: 'offline' // https://developers.google.com/identity/protocols/oauth2/web-server#offline
 });

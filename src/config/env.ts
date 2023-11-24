@@ -33,6 +33,7 @@ export const env = createEnv({
     GOOGLE_API_KEY: z.string().min(1),
 
     SECRET_KEY: z.string().min(process.env.NODE_ENV === 'production' ? 64 : 1),
+    BASE_URL: z.string().url().default('http://localhost:3000'),
 
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   },

@@ -72,7 +72,7 @@ export const GET = async (req: NextRequest) => {
     const channelRes = await fetch(url, {
       headers: {
         authorization: `Bearer ${rawAccessToken}`,
-        referer: 'http://localhost:3000'
+        referer: env.BASE_URL,
       },
     })
       .then(res => res.json())
