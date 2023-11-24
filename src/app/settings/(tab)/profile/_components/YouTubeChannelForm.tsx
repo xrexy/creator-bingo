@@ -102,11 +102,11 @@ export function YouTubeChannelForm({
         <div className="w-2 h-2 mt-0.5 mr-2 rounded-full bg-gray-400/40" />
         <Label htmlFor="connectWithGoogle">YouTube Channel</Label>
       </div>
-      {creator ? (
+      {session && creator ? (
         <DeleteCreatorForm
           name={creator.channelCustomUrl ?? creator.channelTitle}
           channelId={creator.channelId}
-          userId={session!.user.userId}
+          userId={session.user.userId}
         />
       ) : (
         <form
@@ -114,6 +114,7 @@ export function YouTubeChannelForm({
           action={() => initOauthLogin("GOOGLE")}
         >
           <FormSubmit
+            disabled={!!error || !session}
             className="gap-x-2"
             id="connectWithGoogle"
           >
