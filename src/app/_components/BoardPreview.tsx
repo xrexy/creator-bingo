@@ -108,8 +108,8 @@ export function BoardPreview({ board, showDelete }: BoardPreviewProps) {
           )}
         </div>
         <div className="flex items-center justify-between w-full">
-          <div className="flex flex-col items-start flex-1 ">
-            <h3 className="font-semibold ">{title}</h3>
+          <div className="flex flex-col items-start flex-1 text-left">
+            <h3 className="font-semibold">{title}</h3>
             {creator ? (
               <a
                 className="text-sm text-sky-400"
