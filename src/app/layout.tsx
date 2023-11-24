@@ -32,10 +32,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      style={{ backgroundColor: "black" }}
       className={`dark ${GeistSans.variable}`}
     >
-      <body className="overflow-y-auto bg-black">
+      <body
+        style={{ backgroundColor: "black" }}
+        className="overflow-y-auto bg-black"
+      >
         <TRPCReactProvider headers={headers()}>
           <SessionProvider>
             <Toaster
