@@ -120,7 +120,7 @@ export function BingoBoard({ bingoBoard, resourceId }: BingoBoardProps) {
                 const isWin = scoreGame();
 
                 if (!hasWon && isWin)
-                  toast.success("You won!", {
+                  toast.success("Bingo!", {
                     icon: "🎉",
                     position: "top-center",
                     duration: 2.5 * 1000,

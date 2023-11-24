@@ -3,7 +3,7 @@ export const tabs = [
   "content",
   "tokens",
   "feedback",
-  "danger",
+  // "danger", // not sure what to have here so will leave it out for now
 ] as const;
 export type SettingsTab = (typeof tabs)[number];
 
@@ -13,3 +13,4 @@ export type SettingsPageMeta = {
   title: string;
   description: string;
 };
+

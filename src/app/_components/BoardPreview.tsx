@@ -21,7 +21,13 @@ const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation();
 };
 
-function DeleteAction({ resourceId }: { resourceId: string }) {
+function DeleteAction({
+  resourceId,
+  title,
+}: {
+  resourceId: string;
+  title: string;
+}) {
   return (
     <form
       action={() => {
@@ -38,7 +44,7 @@ function DeleteAction({ resourceId }: { resourceId: string }) {
           execution,
           {
             loading: "Deleting...",
-            success: "Deleted!",
+            success: `Deleted ${title}!`,
             error:
               "Failed to delete. Please try again, and if the problem persists, contact support.",
           },
@@ -118,7 +124,12 @@ export function BoardPreview({ board, showDelete }: BoardPreviewProps) {
               <p className="text-sm text-sky-400">Deleted</p>
             )}
           </div>
-          {showDelete && <DeleteAction resourceId={resourceId} />}
+          {showDelete && (
+            <DeleteAction
+              title={title}
+              resourceId={resourceId}
+            />
+          )}
         </div>
       </div>
     </button>
