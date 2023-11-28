@@ -70,8 +70,10 @@ The app requires the following environment variables to be set:
 All the bingo entries are store in `data/bingo_entries.json`. Adding more entries following the format `{ [entryKey]: ":entryText" }` will add more entries to the bingo board.
 
 ```
-The app generates the board using a PRNG seeded with the resourceId. This is done so the board is the same for everyone.
+The app generates the board using a PRNG seeded with the resourceId. 
+This is done so the board is the same for everyone.
 
-This means that the order of the entries in the json file matters. If you want to add more entries to the board, add them to the end of the file.
+This means that the order of the entries in the json file matters. 
+If you want to add more entries to the board, add them to the end of the file.
 ```
 
