@@ -9,7 +9,7 @@ App that strives to improve the Creator Bingo(series by [@JJJacksfilms](https://
   - The board title is separate from the youtube title so it is possible to fix "title desync" issues.
 - Every user can play a board by clicking on the video thumbnail.
   - Board links follow the format - /play/:youtubeResourceId. Which makes it possible to copy the resourceId from the youtube video url and easily access the bingo board.
-    - `https://www.youtube.com/watch?v=**LQ2r15c02U1** => /play/LQ2r15c02U1
+    - `https://www.youtube.com/watch?v=LQ2r15c02U1` is equal to `/play/LQ2r15c02U1`
 - `[Concept]` After the user gets a bingo on the board the board would be persisted and sent to the creator as "feedback".
   - The creator would be able to see all the "feedback" on their content dash
 
